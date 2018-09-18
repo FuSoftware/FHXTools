@@ -11,7 +11,19 @@ namespace FHXTools.FHX
         List<FHXObject> FHXObjects = new List<FHXObject>();
         List<FHXParameter> FHXParameters = new List<FHXParameter>();
 
-        public FHXDatabase()
+        FHXObject Root;
+
+        public FHXDatabase(FHXObject root)
+        {
+
+        }
+
+        private void AddObject()
+        {
+
+        }
+
+        private void AddParameter()
         {
 
         }

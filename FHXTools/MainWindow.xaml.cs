@@ -24,6 +24,8 @@ namespace FHXTools
     /// </summary>
     public partial class MainWindow : Window
     {
+        FHXObject root;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -58,7 +60,7 @@ namespace FHXTools
 
             sw.Restart();
             Parser p = new Parser(tokens);
-            FHXObject root = p.ParseAll();
+            root = p.ParseAll();
             sw.Stop();
             Console.WriteLine("Parsing file took {0} ms", sw.ElapsedMilliseconds);
 
@@ -72,6 +74,17 @@ namespace FHXTools
             TreeViewItem i = (TreeViewItem)e.NewValue;
             FHXObject o = (FHXObject)i.Tag;
             this.labelBottom.Content = o.Path();
+
+            this.gridParam.ItemsSource = o.Parameters;
+            this.gridParam.Columns[2].Visibility = Visibility.Hidden; //Hides the Parent field
+        }
+
+        private void btnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            string query = tbSearch.Text;
+
+            List<FHXSearchResult> results = root.Search(query);
+            this.gridSearch.ItemsSource = results;
         }
     }
 }

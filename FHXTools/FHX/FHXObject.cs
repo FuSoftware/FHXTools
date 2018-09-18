@@ -52,6 +52,10 @@ namespace FHXTools.FHX
 
         public void SetParent(FHXObject parent)
         {
+            if(parent == null && this.Parent != null)
+            {
+                this.Parent.RemoveChild(this);
+            }
             this.Parent = parent;
         }
 
@@ -124,6 +128,43 @@ namespace FHXTools.FHX
             return c;
         }
 
+        public List<FHXParameter> GetAllParameters()
+        {
+            List<FHXObject> c = GetAllChildren();
+            List<FHXParameter> p = new List<FHXParameter>();
+
+            foreach (FHXObject o in Children)
+            {
+                p.AddRange(o.Parameters);
+            }
+
+            return p;
+        }
+
+        public List<FHXSearchResult> Search(string query)
+        {
+            List<FHXSearchResult> res = new List<FHXSearchResult>();
+
+            //Search Objects
+            List<FHXObject> os = GetAllChildren().Where(i => i.Name.Contains(query)).ToList();
+
+            foreach (var o in os)
+            {
+                res.Add(new FHXSearchResult(o));
+            }
+
+            //Search Parameters
+            List<FHXParameter> ps = GetAllParameters();
+            ps = ps.Where(i => i.Identifier.Contains(query) || i.Value.Contains(query)).ToList();
+
+            foreach (var p in ps)
+            {
+                res.Add(new FHXSearchResult(p));
+            }
+
+            return res;
+        }
+
         public static void BuildDeltaVHierarchy(FHXObject obj)
         {
             FHXObject root = obj.GetRoot();
@@ -133,9 +174,10 @@ namespace FHXTools.FHX
             List<FHXObject> FUNCTION_BLOCK_DEFINITION = AllChildren.Where(i => i.Type == "FUNCTION_BLOCK_DEFINITION").ToList();
             List<FHXObject> ATTRIBUTE_INSTANCE = AllChildren.Where(i => i.Type == "ATTRIBUTE_INSTANCE").ToList();
             List<FHXObject> ATTRIBUTE = AllChildren.Where(i => i.Type == "ATTRIBUTE").ToList();
+            List<FHXObject> VALUE = AllChildren.Where(i => i.Type == "VALUE").ToList();
 
             //Replace FBs with DEFINITION by their definition
-            foreach(FHXObject fb in FUNCTION_BLOCK)
+            foreach (FHXObject fb in FUNCTION_BLOCK)
             {
                 FHXObject parent = fb.Parent;
                 parent.RemoveChild(fb);
@@ -146,6 +188,18 @@ namespace FHXTools.FHX
                     newChild.Name = fb.GetName();
                     parent.AddChild(newChild);
                 }               
+            }
+
+            //Removes the VALUE Objects and sets their parameters to their parent.
+            foreach (FHXObject fb in VALUE)
+            {
+                FHXObject parent = fb.Parent;
+
+                foreach(FHXParameter p in fb.Parameters)
+                {
+                    parent.AddParameter(p);
+                    fb.SetParent(null);
+                }
             }
 
             //Replace ATTRIBUTE by ATTRIBUTE_INSTANCE when needed

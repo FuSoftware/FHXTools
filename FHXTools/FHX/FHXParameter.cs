@@ -23,5 +23,10 @@ namespace FHXTools.FHX
         {
             this.Parent = parent;
         }
+
+        public string Path()
+        {
+            return Parent.Path() + @"\" + this.Identifier;
+        }
     }
 }

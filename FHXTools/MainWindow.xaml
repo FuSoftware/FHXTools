@@ -5,16 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FHXTools"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="764" Width="1024">
     <Grid>
-        <TreeView Name="tvMain" SelectedItemChanged="tvMain_SelectedItemChanged" HorizontalAlignment="Left" Height="342" Margin="10,37,0,0" VerticalAlignment="Top" Width="300"/>
+        <TreeView Name="tvMain" SelectedItemChanged="tvMain_SelectedItemChanged" HorizontalAlignment="Left" Height="661" Margin="10,37,0,0" VerticalAlignment="Top" Width="300"/>
         <Button Content="Ouvrir" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
-        <DataGrid Name ="gridParam" HorizontalAlignment="Left" Height="369" Margin="395,10,0,0" VerticalAlignment="Top" Width="387">
+        <DataGrid Name ="gridParam" HorizontalAlignment="Left" Height="683" Margin="315,10,0,0" VerticalAlignment="Top" Width="387">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Parameter" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Value" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Label Name="labelBottom" Content="Label" HorizontalAlignment="Left" Margin="10,384,0,0" VerticalAlignment="Top" Width="772"/>
+        <Label Name="labelBottom" Content="Label" HorizontalAlignment="Left" Margin="10,698,0,0" VerticalAlignment="Top" Width="772"/>
+        <DataGrid Name ="gridSearch" HorizontalAlignment="Left" Height="656" Margin="707,37,0,0" VerticalAlignment="Top" Width="299">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Parameter" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Value" IsReadOnly="True"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <TextBox Name="tbSearch" HorizontalAlignment="Left" Height="23" Margin="707,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="219"/>
+        <Button Name="btnSearch" Content="Search" HorizontalAlignment="Left" Margin="931,10,0,0" VerticalAlignment="Top" Width="75" Click="btnSearch_Click"/>
     </Grid>
 </Window>

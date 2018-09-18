@@ -65,6 +65,7 @@
     <Compile Include="FHX\FHXDatabase.cs" />
     <Compile Include="FHX\FHXObject.cs" />
     <Compile Include="FHX\FHXParameter.cs" />
+    <Compile Include="FHX\FHXSearchResult.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Token.cs" />
