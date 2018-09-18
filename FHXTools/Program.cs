@@ -34,10 +34,30 @@ namespace FHXTools
             sw.Stop();
             Console.WriteLine("Tokenizing file took {0} ms", sw.ElapsedMilliseconds);
 
+            TestTokenHierarchy(tokens);
+
             sw.Restart();
-            ParseTokens(tokens);
+            FHXObject root = ParseTokens(tokens);
             sw.Stop();
             Console.WriteLine("Parsing file took {0} ms", sw.ElapsedMilliseconds);
+        }
+
+        public static void TestTokenHierarchy(List<Token> tokens)
+        {
+            long count = 0;
+            foreach(Token t in tokens)
+            {
+                if(t.Type == TokenType.OPEN_BRACKET)
+                {
+                    count++;
+                }
+                else if (t.Type == TokenType.CLOSE_BRACKET)
+                {
+                    count--;
+                }
+            }
+
+            Console.WriteLine("Hierarchy control, should return zero : {0}", count);
         }
 
         public static FHXObject ParseTokens(List<Token> tokens)

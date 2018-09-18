@@ -8,9 +8,18 @@ namespace FHXTools.FHX
 {
     class FHXParameter
     {
-        FHXObject Parent;
+        public FHXObject Parent { get; set; }
+        public string Identifier { get; set; }
+        public string Value { get; set; }
 
-        public FHXParameter(FHXObject parent)
+        public FHXParameter(string identifier, string value, FHXObject parent = null)
+        {
+            this.Parent = parent;
+            this.Identifier = identifier;
+            this.Value = value;
+        }
+
+        public void SetParent(FHXObject parent = null)
         {
             this.Parent = parent;
         }

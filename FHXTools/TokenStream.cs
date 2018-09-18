@@ -39,7 +39,7 @@ namespace FHXTools
 
         bool IsText(char c)
         {
-            return (char.IsLetterOrDigit(c) || char.IsPunctuation(c) || char.IsSymbol(c)) && !("@=/*".Contains(c));
+            return (char.IsLetterOrDigit(c) || char.IsPunctuation(c) || char.IsSymbol(c)) && !("@=/*{}".Contains(c));
         }
 
         bool IsOpenBracket(char c)
@@ -103,11 +103,7 @@ namespace FHXTools
             if (Input.EOF()) return null;
             char ch = Input.Peek();
 
-            if (IsText(ch))
-            {
-                return new Token(TokenType.TEXT, ReadWhile(IsText));
-            }
-            else if (IsQuote(ch))
+            if (IsQuote(ch))
             {
                 Input.Next(); //Skip first quote
 
@@ -171,6 +167,10 @@ namespace FHXTools
                 {
                     return new Token(TokenType.TEXT, c);
                 }
+            }
+            else if (IsText(ch))
+            {
+                return new Token(TokenType.TEXT, ReadWhile(IsText));
             }
             else
             {
