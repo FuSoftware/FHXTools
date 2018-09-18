@@ -1,0 +1,9 @@
+@startuml
+start
+:Ouvrir Fichier;
+while (Token Disponible ?)
+
+endwhile
+:Fermer fichier;
+end
+@enduml

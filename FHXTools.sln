@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2016
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FHXTools", "FHXTools\FHXTools.csproj", "{4E7B41E3-04AB-4101-9798-8818AB09D4F0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4E7B41E3-04AB-4101-9798-8818AB09D4F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E7B41E3-04AB-4101-9798-8818AB09D4F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E7B41E3-04AB-4101-9798-8818AB09D4F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E7B41E3-04AB-4101-9798-8818AB09D4F0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0525971D-0289-408E-ACAC-219467839CE7}
+	EndGlobalSection
+EndGlobal
