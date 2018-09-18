@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Diagnostics;
+using FHXTools.FHX;
 
 namespace FHXTools
 {
@@ -39,9 +40,11 @@ namespace FHXTools
             Console.WriteLine("Parsing file took {0} ms", sw.ElapsedMilliseconds);
         }
 
-        public static void ParseTokens(List<Token> tokens)
+        public static FHXObject ParseTokens(List<Token> tokens)
         {
-
+            Parser p = new Parser(tokens);
+            FHXObject o = p.ParseAll();
+            return o;
         }
 
         public static List<Token> TestTokens(string input)
