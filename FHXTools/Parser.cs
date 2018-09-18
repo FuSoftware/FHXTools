@@ -57,7 +57,7 @@ namespace FHXTools
             List<FHXParameter> parameters = new List<FHXParameter>();
 
 
-            FHXObject root = new FHXObject("ROOT","Project");
+            FHXObject root = new FHXObject("ROOT", "Project");
             objects.Add(root);
 
             bool waitingForBody = false; //Flag to see if we started an item and are looking for a bracketed body

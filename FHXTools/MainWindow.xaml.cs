@@ -58,11 +58,13 @@ namespace FHXTools
 
             sw.Restart();
             Parser p = new Parser(tokens);
-            FHXObject o = p.ParseAll();
+            FHXObject root = p.ParseAll();
             sw.Stop();
             Console.WriteLine("Parsing file took {0} ms", sw.ElapsedMilliseconds);
 
-            this.tvMain.Items.Add(o.ToTreeViewItem(true));
+            FHXObject.BuildDeltaVHierarchy(root);
+
+            this.tvMain.Items.Add(root.ToTreeViewItem(true));
         }
 
         private void tvMain_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
