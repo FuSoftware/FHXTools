@@ -96,7 +96,6 @@ namespace FHXTools.FHX
                     return this.Type;
                 }
             }
-           
         }
 
         public FHXParameter GetParameter(string name)

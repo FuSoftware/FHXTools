@@ -62,8 +62,20 @@ namespace FHXTools.Views
 
             double coef = 37.0 / 11940138.0;
             double sec = coef * (double)(a.GetAllParameters().Count * b.GetAllParameters().Count);
+            string unit = "s";
+            if (sec > 60.0)
+            {
+                sec = sec / 60.0;
+                unit = "m";
+            }
+            else if (sec > 3600.0)
+            {
+                sec = sec / 3600.0;
+                unit = "h";
+            }
 
-            string sMessageBoxText = string.Format("La procédure prendra environ {0}s. Continuer ?", sec);
+
+            string sMessageBoxText = string.Format("La procédure prendra environ {0}{1}. Continuer ?", sec, unit);
             string sCaption = "Valider la comparaison";
 
             MessageBoxButton btnMessageBox = MessageBoxButton.YesNoCancel;
