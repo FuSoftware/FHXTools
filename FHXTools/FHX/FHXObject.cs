@@ -69,7 +69,7 @@ namespace FHXTools.FHX
 
             if(this.Type == "SIMPLE_IO_CHANNEL")
             {
-                return "CH" + this.GetParameter("POSITION").Value;
+                return string.Format("CH{0}", this.GetParameter("POSITION").Value);
             }
             else if (this.Type == "SERIAL_IO_PORT")
             {
@@ -168,10 +168,7 @@ namespace FHXTools.FHX
             return p;
         }
 
-        public bool HasParameter(string name)
-        {
-            return this.Parameters.Any(i => i.Identifier == name);
-        }
+        public bool HasParameter(string name) => this.Parameters.Any(i => i.Identifier == name);
 
         public FHXObject GetChild(string name, bool deep = false)
         {
@@ -326,27 +323,13 @@ namespace FHXTools.FHX
             }
 
             //Removes the useless items by type
-            List<string> unused = new List<string>() { "WIRE", "GRAPHICS", "CATEGORY", "FUNCTION_BLOCK_TEMPLATE", "FUNCTION_BLOCK_DEFINITION" };
-            foreach (string u in unused)
+            List<string> unused_types = new List<string>() { "WIRE", "GRAPHICS", "CATEGORY", "FUNCTION_BLOCK_TEMPLATE", "FUNCTION_BLOCK_DEFINITION" };
+            List<string> unused_names = new List<string>() { "RECTANGLE", "POSITION", "ORIGIN", "END", "CATEGORY" };
+            List<FHXObject> uc = AllChildren.Where(i => unused_types.Contains(i.Type) || unused_names.Contains(i.Name)).ToList();
+            foreach (FHXObject fb in uc)
             {
-                List<FHXObject> uc = AllChildren.Where(i => i.Type == u).ToList();
-                foreach (FHXObject fb in uc)
-                {
-                    fb.Parent.RemoveChild(fb);
-                    fb.SetParent(null);
-                }
-            }
-
-            //Removes the useless items by name
-            unused = new List<string>() { "RECTANGLE", "POSITION", "ORIGIN", "END", "CATEGORY"};
-            foreach (string u in unused)
-            {
-                List<FHXObject> uc = AllChildren.Where(i => i.Name == u).ToList();
-                foreach (FHXObject fb in uc)
-                {
-                    fb.Parent.RemoveChild(fb);
-                    fb.SetParent(null);
-                }
+                fb.Parent.RemoveChild(fb);
+                fb.SetParent(null);
             }
         }
     }

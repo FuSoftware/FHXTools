@@ -25,14 +25,7 @@ namespace FHXTools.FHX
         {
             get
             {
-                if (this.ParamSource != null)
-                {
-                    return this.ParamSource.Path;
-                }
-                else
-                {
-                    return this.Source.Path();
-                }
+                return this.ParamSource != null ? ParamSource.Path : this.Source.Path();
             }
         }
 
@@ -40,14 +33,7 @@ namespace FHXTools.FHX
         {
             get
             {
-                if (this.ParamSource != null)
-                {
-                    return this.ParamSource.Value;
-                }
-                else
-                {
-                    return this.Source.GetName();
-                }
+                return (this.ParamSource != null) ? this.ParamSource.Value : this.Source.GetName();
             }
         }
     }

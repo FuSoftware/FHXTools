@@ -45,10 +45,7 @@ namespace FHXTools.FHX
 
         public string Path
         {
-            get
-            {
-                return Parent.Path() + @"/" + this.Identifier;
-            }
+            get{ return Parent.Path() + @"/" + this.Identifier; }
         }
     }
 }
