@@ -1,9 +1,11 @@
-﻿using System;
+﻿using FHXTools.Utils;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
@@ -128,7 +130,8 @@ namespace FHXTools.FHX
 
             if (recursive)
             {
-                foreach (FHXObject o in Children)
+                IEnumerable<FHXObject> query = Children.OrderBy(i => i.GetName());
+                foreach (FHXObject o in query)
                 {
                     item.Items.Add(o.ToTreeViewItem(true));
                 }
@@ -255,76 +258,34 @@ namespace FHXTools.FHX
             return root;
         }
 
-        public static FHXCompareResultList CompareObjects(FHXObject a, FHXObject b)
-        {
-            FHXCompareResultList res = new FHXCompareResultList();
-
-            List<FHXParameter> psa = a.GetAllParameters();
-            List<FHXParameter> psb = b.GetAllParameters();
-
-            foreach (var pa in psa)
-            {
-                string rpath = pa.RelativePath(a);
-                //Check if b contains the parameter
-                if (psb.Any(i => i.RelativePath(b) == rpath))
-                {
-                    //If it contains it
-                    //FHXParameter pb = psb.Single(i => i.RelativePath(b) == rpath);
-                    FHXParameter pb = psb.Where(i => i.RelativePath(b) == rpath).ToArray()[0];
-                    if (pa.Value != pb.Value)
-                    {
-                        res.Add(a, pa, FHXCompareType.DIFFERENT);
-                        res.Add(b, pb, FHXCompareType.DIFFERENT);
-                    }
-                }
-                else
-                {
-                    //If not
-                    res.Add(a, pa, FHXCompareType.IN);
-                }
-            }
-            
-            foreach (var pb in psb)
-            {
-                string rpath = pb.RelativePath(b);
-                //Check if b contains the parameter
-                if (!psb.Any(i => i.RelativePath(b) == rpath))
-                {
-                    //If not
-                    res.Add(b, pb, FHXCompareType.IN);
-                }
-            }
-            
-
-            return res;
-        }
-
         public static void BuildDeltaVHierarchy(FHXObject obj)
         {
             FHXObject root = obj.GetRoot();
             List<FHXObject> AllChildren = root.GetAllChildren();
 
-            List<FHXObject> FUNCTION_BLOCK = AllChildren.Where(i => i.Type == "FUNCTION_BLOCK" && i.Parameters.Any(j => j.Identifier == "DEFINITION")).ToList();
-            List<FHXObject> FUNCTION_BLOCK_DEFINITION = AllChildren.Where(i => i.Type == "FUNCTION_BLOCK_DEFINITION").ToList();
-            List<FHXObject> ATTRIBUTE_INSTANCE = AllChildren.Where(i => i.Type == "ATTRIBUTE_INSTANCE").ToList();
-            List<FHXObject> ATTRIBUTE = AllChildren.Where(i => i.Type == "ATTRIBUTE").ToList();
-            List<FHXObject> VALUE = AllChildren.Where(i => i.Type == "VALUE").ToList();
 
             //Replace FBs with DEFINITION by their definition
+            List<FHXObject> FUNCTION_BLOCK = AllChildren.Where(i => i.Type == "FUNCTION_BLOCK" && i.Parameters.Any(j => j.Identifier == "DEFINITION")).ToList();
+            List<FHXObject> FUNCTION_BLOCK_DEFINITION = AllChildren.Where(i => i.Type == "FUNCTION_BLOCK_DEFINITION").ToList();
             foreach (FHXObject fb in FUNCTION_BLOCK)
             {
                 FHXObject parent = fb.Parent;
-                parent.RemoveChild(fb);
+                fb.Parent.RemoveChild(fb);
+                fb.SetParent(null);
 
                 if (FUNCTION_BLOCK_DEFINITION.Any(i => i.GetName() == fb.GetParameter("DEFINITION").Value))
                 {
                     FHXObject newChild = FUNCTION_BLOCK_DEFINITION.Single(i => i.GetName() == fb.GetParameter("DEFINITION").Value);
                     newChild.Name = fb.GetName();
+                    newChild.Type = "FUNCTION_BLOCK";
+                    newChild.Parent.RemoveChild(newChild);
+                    newChild.SetParent(null);
                     parent.AddChild(newChild);
                 }
             }
 
             //Removes the VALUE Objects and sets their parameters to their parent.
+            List<FHXObject> VALUE = AllChildren.Where(i => i.Type == "VALUE").ToList();
             foreach (FHXObject fb in VALUE)
             {
                 FHXObject parent = fb.Parent;
@@ -337,11 +298,33 @@ namespace FHXTools.FHX
             }
 
             //Replace ATTRIBUTE by ATTRIBUTE_INSTANCE when needed
-            Console.WriteLine("");
+            List<FHXObject> ATTRIBUTE_INSTANCE = AllChildren.Where(i => i.Type == "ATTRIBUTE_INSTANCE").ToList();
+            foreach (FHXObject attr in ATTRIBUTE_INSTANCE)
+            {
+                FHXObject parent = attr.Parent;
+
+                List<FHXObject> ATTRIBUTE = AllChildren.Where(i => i.Type == "ATTRIBUTE" && i.GetName() == attr.GetName()).ToList();
+
+                if(ATTRIBUTE.Count > 1)
+                {
+                    Console.WriteLine("Multiple instances of {0} found", attr.GetName());
+                }
+
+                foreach(var a in ATTRIBUTE)
+                {
+                    //Adds the ATTRIBUTE_INSTANCE in the parent of the ATTRIBUTE
+                    attr.SetParent(null);
+                    a.Parent.AddChild(attr);
+
+                    //Removes the ATTRIBUTE from its parent
+                    a.Parent.RemoveChild(a);
+                    a.SetParent(null);
+                }
+            }
 
             //Removes the useless items by type
-            List<string> unused = new List<string>() { "WIRE", "GRAPHICS" };
-            foreach(string u in unused)
+            List<string> unused = new List<string>() { "WIRE", "GRAPHICS", "CATEGORY", "FUNCTION_BLOCK_TEMPLATE", "FUNCTION_BLOCK_DEFINITION" };
+            foreach (string u in unused)
             {
                 List<FHXObject> uc = AllChildren.Where(i => i.Type == u).ToList();
                 foreach (FHXObject fb in uc)
@@ -352,7 +335,7 @@ namespace FHXTools.FHX
             }
 
             //Removes the useless items by name
-            unused = new List<string>() { "RECTANGLE"};
+            unused = new List<string>() { "RECTANGLE", "POSITION", "ORIGIN", "END", "CATEGORY"};
             foreach (string u in unused)
             {
                 List<FHXObject> uc = AllChildren.Where(i => i.Name == u).ToList();
@@ -362,7 +345,6 @@ namespace FHXTools.FHX
                     fb.SetParent(null);
                 }
             }
-
         }
     }
 }

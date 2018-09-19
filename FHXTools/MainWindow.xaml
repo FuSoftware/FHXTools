@@ -18,9 +18,7 @@
         <DockPanel Grid.Row="0">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_File">
-                    <MenuItem Header="_New" />
-                    <MenuItem Header="_Open" />
-                    <MenuItem Header="_Save" />
+                    <MenuItem Header="_Open" Click="Button_Click" />
                     <Separator />
                     <MenuItem Header="_Exit" />
                 </MenuItem>
@@ -39,19 +37,19 @@
 
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="28" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="28" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="250" />
+                <ColumnDefinition Width="5" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Label Grid.Row="2" Grid.Column="0" Name="labelBottom" Content="Label" />
-        
-            <TreeView Grid.Row="1" Grid.Column="0" Name="tvMain" SelectedItemChanged="tvMain_SelectedItemChanged"/>
-            <Button Grid.Row="0" Grid.Column="0" Content="Ouvrir" Click="Button_Click"/>
-            <DataGrid Grid.Row="1" Grid.Column="1" Name ="gridParam" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Label Grid.Row="1" Grid.Column="0" Name="labelBottom" Content="Label" />
+
+            <TreeView Grid.Row="0" Grid.Column="0" Name="tvMain" SelectedItemChanged="tvMain_SelectedItemChanged"/>
+            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" />
+            <DataGrid Grid.Row="0" Grid.Column="2" Name ="gridParam" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Parameter" IsReadOnly="True"/>
                     <DataGridTextColumn Header="Value" IsReadOnly="True"/>

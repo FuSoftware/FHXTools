@@ -62,6 +62,7 @@
     <Compile Include="AST\NumNode.cs" />
     <Compile Include="AST\StrNode.cs" />
     <Compile Include="AST\VarNode.cs" />
+    <Compile Include="FHX\FHXComparator.cs" />
     <Compile Include="FHX\FHXCompareResult.cs" />
     <Compile Include="FHX\FHXObject.cs" />
     <Compile Include="FHX\FHXParameter.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Token.cs" />
     <Compile Include="TokenStream.cs" />
+    <Compile Include="Utils\EnumerableComparer.cs" />
     <Compile Include="Views\ComparisonWindow.xaml.cs">
       <DependentUpon>ComparisonWindow.xaml</DependentUpon>
     </Compile>

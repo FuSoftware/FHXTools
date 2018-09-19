@@ -86,7 +86,7 @@ namespace FHXTools.Views
             switch (rsltMessageBox)
             {
                 case MessageBoxResult.Yes:
-                    results = FHXObject.CompareObjects(a, b);
+                    results = FHXComparator.CompareObjects(a, b);
                     this.gridResults.ItemsSource = results.Results;
                     this.gridResults.Columns[1].Visibility = Visibility.Hidden;
                     break;

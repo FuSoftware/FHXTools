@@ -39,32 +39,9 @@ namespace FHXTools
                 ChargerFichier((openFileDialog.FileName));
         }
 
-        private void ChargerFichier(string fichier)
+        private void ChargerFichier(string file)
         {
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-            string s = File.ReadAllText(fichier);
-            sw.Stop();
-            Console.WriteLine("Reading file took {0} ms", sw.ElapsedMilliseconds);
-
-            sw.Restart();
-            List<Token> tokens = new List<Token>();
-            TokenStream ts = new TokenStream(s);
-
-            while (!ts.EOF())
-            {
-                Token t = ts.Next();
-                if (t != null) tokens.Add(t);
-            }
-            sw.Stop();
-            Console.WriteLine("Tokenizing file took {0} ms", sw.ElapsedMilliseconds);
-
-            sw.Restart();
-            Parser p = new Parser(tokens);
-            root = p.ParseAll();
-            sw.Stop();
-            Console.WriteLine("Parsing file took {0} ms", sw.ElapsedMilliseconds);
-
+            root = FHXObject.FromFile(file);
             FHXObject.BuildDeltaVHierarchy(root);
 
             this.tvMain.Items.Add(root.ToTreeViewItem(true));
