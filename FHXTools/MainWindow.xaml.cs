@@ -89,12 +89,6 @@ namespace FHXTools
                     if (saveFileDialog.ShowDialog() == true)
                         FHXExcelExporter.ExportParameters(Selected, saveFileDialog.FileName);
                     break;
-
-                case MessageBoxResult.No:
-                    return;
-
-                case MessageBoxResult.Cancel:
-                    return;
             }            
         }
     }

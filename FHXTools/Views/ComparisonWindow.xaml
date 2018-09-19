@@ -15,19 +15,17 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Row="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100" />
-                <ColumnDefinition Width="100" />
-                <ColumnDefinition Width="100" />
-            </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Name="btnCompare" Content="Compare" Click="Compare" ></Button>
-            <TextBox Grid.Column="1" Name="tbName1"></TextBox>
-            <TextBox Grid.Column="2" Name="tbName2"></TextBox>
-        </Grid>
+        <DockPanel Grid.Row="0">
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_Open" Click="Compare" />
+                    <MenuItem Header="_Export">
+                        <MenuItem Header="_Excel" Click="ExportExcel" />
+                    </MenuItem>
+                </MenuItem>
+            </Menu>
+            <TextBox AcceptsReturn="True" />
+        </DockPanel>
 
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>

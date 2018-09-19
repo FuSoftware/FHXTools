@@ -35,8 +35,58 @@ namespace FHXTools.FHX
                 
         }
 
-        public static void ExportRecherche()
+        public static void ExportRecherche(List<FHXSearchResult> results, string file)
         {
+            using (var pkg = new ExcelPackage())
+            {
+                var wbk = pkg.Workbook;
+                var sht = wbk.Worksheets.Add("Parameters");
+
+                sht.Cells[1, 1].Value = "Path";
+                sht.Cells[1, 2].Value = "Value";
+
+                int i = 2;
+
+                foreach (var r in results)
+                {
+                    sht.Cells[i, 1].Value = r.Path;
+                    sht.Cells[i, 2].Value = r.Value;
+                    i++;
+                }
+
+                pkg.SaveAs(new FileInfo(file));
+            }
         }
-    }
+
+        public static void ExportComparison(FHXCompareResultList results, string file)
+        {
+            using (var pkg = new ExcelPackage())
+            {
+                var wbk = pkg.Workbook;
+                var sht = wbk.Worksheets.Add("Parameters");
+
+                sht.Cells[1, 1].Value = "Key";
+                sht.Cells[1, 2].Value = "Parent";
+                sht.Cells[1, 3].Value = "Type";
+                sht.Cells[1, 4].Value = "Value";
+
+                int i = 2;
+
+                foreach (var k in results.Results.Keys)
+                {
+                    foreach (var r in results.Results[k])
+                    {
+                        sht.Cells[i, 1].Value = k;
+                        sht.Cells[i, 2].Value = r.Parent;
+                        sht.Cells[i, 3].Value = r.Type;
+                        sht.Cells[i, 4].Value = r.Value;
+                        i++;
+                    }
+                    
+                }
+
+                pkg.SaveAs(new FileInfo(file));
+            }
+        }
+}
 }

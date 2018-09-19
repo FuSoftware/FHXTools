@@ -28,6 +28,28 @@ namespace FHXTools.Views
             InitializeComponent();
         }
 
+        private void ExportExcel(object sender, RoutedEventArgs e)
+        {
+            if (results == null) return;
+            string sMessageBoxText = string.Format("Exporter la comparaison ?");
+            string sCaption = "Export";
+
+            MessageBoxButton btnMessageBox = MessageBoxButton.YesNoCancel;
+            MessageBoxImage icnMessageBox = MessageBoxImage.Warning;
+
+            MessageBoxResult rsltMessageBox = MessageBox.Show(sMessageBoxText, sCaption, btnMessageBox, icnMessageBox);
+
+            switch (rsltMessageBox)
+            {
+                case MessageBoxResult.Yes:
+                    SaveFileDialog saveFileDialog = new SaveFileDialog();
+                    saveFileDialog.Filter = "Excel file (*.xlsx)|*.xlsx";
+                    if (saveFileDialog.ShowDialog() == true)
+                        FHXExcelExporter.ExportComparison(results, saveFileDialog.FileName);
+                    break;
+            }
+        }
+
         private void Compare(object sender, RoutedEventArgs e)
         {
             string n1 = "";

@@ -1,4 +1,5 @@
 ﻿using FHXTools.FHX;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,7 @@ namespace FHXTools.Views
     public partial class SearchWindow : Window
     {
         FHXObject root;
+        List<FHXSearchResult> results = null;
 
         public SearchWindow()
         {
@@ -41,6 +43,28 @@ namespace FHXTools.Views
             this.gridSearch.ItemsSource = results;
             this.gridSearch.Columns[0].Visibility = Visibility.Hidden; //Hides the Parent field
             this.gridSearch.Columns[1].Visibility = Visibility.Hidden; //Hides the Parent field
+        }
+
+        private void ExportExcel(object sender, RoutedEventArgs e)
+        {
+            if (results == null) return;
+            string sMessageBoxText = string.Format("Exporter la comparaison ?");
+            string sCaption = "Export";
+
+            MessageBoxButton btnMessageBox = MessageBoxButton.YesNoCancel;
+            MessageBoxImage icnMessageBox = MessageBoxImage.Warning;
+
+            MessageBoxResult rsltMessageBox = MessageBox.Show(sMessageBoxText, sCaption, btnMessageBox, icnMessageBox);
+
+            switch (rsltMessageBox)
+            {
+                case MessageBoxResult.Yes:
+                    SaveFileDialog saveFileDialog = new SaveFileDialog();
+                    saveFileDialog.Filter = "Excel file (*.xlsx)|*.xlsx";
+                    if (saveFileDialog.ShowDialog() == true)
+                        FHXExcelExporter.ExportRecherche(results, saveFileDialog.FileName);
+                    break;
+            }
         }
     }
 }
