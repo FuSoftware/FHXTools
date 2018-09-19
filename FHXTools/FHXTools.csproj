@@ -62,7 +62,7 @@
     <Compile Include="AST\NumNode.cs" />
     <Compile Include="AST\StrNode.cs" />
     <Compile Include="AST\VarNode.cs" />
-    <Compile Include="FHX\FHXDatabase.cs" />
+    <Compile Include="FHX\FHXCompareResult.cs" />
     <Compile Include="FHX\FHXObject.cs" />
     <Compile Include="FHX\FHXParameter.cs" />
     <Compile Include="FHX\FHXSearchResult.cs" />
@@ -70,6 +70,12 @@
     <Compile Include="Program.cs" />
     <Compile Include="Token.cs" />
     <Compile Include="TokenStream.cs" />
+    <Compile Include="Views\ComparisonWindow.xaml.cs">
+      <DependentUpon>ComparisonWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SearchWindow.xaml.cs">
+      <DependentUpon>SearchWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -83,6 +89,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\ComparisonWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SearchWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

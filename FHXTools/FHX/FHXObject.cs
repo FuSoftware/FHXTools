@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,7 +9,7 @@ using System.Windows.Controls;
 
 namespace FHXTools.FHX
 {
-    class FHXObject
+    public class FHXObject
     {
         public List<FHXObject> Children = new List<FHXObject>();
         public List<FHXParameter> Parameters = new List<FHXParameter>();
@@ -63,22 +65,43 @@ namespace FHXTools.FHX
         {
             if (this.Name != "" && this.Name != null) return this.Name;
 
-            bool hasName = this.Parameters.Any(s => s.Identifier == "NAME" || s.Identifier == "TAG");
-
-            if(hasName)
+            if(this.Type == "SIMPLE_IO_CHANNEL")
             {
-                FHXParameter p = this.Parameters.Single(s => s.Identifier == "NAME" || s.Identifier == "TAG");
-                return p.Value;
+                return "CH" + this.GetParameter("POSITION").Value;
+            }
+            else if (this.Type == "SERIAL_IO_PORT")
+            {
+                return string.Format("P{0}", this.GetParameter("POSITION").Value);
+            }
+            else if (this.Type == "SERIAL_IO_DEVICE")
+            {
+                return string.Format("I{0}", this.GetParameter("INDEX").Value);
+            }
+            else if(this.Type == "SIMPLE_IO_CARD" || this.Type == "SERIAL_IO_CARD")
+            {
+                return string.Format("{0}/C{1}", this.GetParameter("CONTROLLER").Value, this.GetParameter("CARD_SLOT").Value);
             }
             else
             {
-                return this.Type;
+                bool hasName = this.Parameters.Any(s => s.Identifier == "NAME" || s.Identifier == "TAG");
+
+                if (hasName)
+                {
+
+                    FHXParameter p = this.Parameters.Single(s => s.Identifier == "NAME" || s.Identifier == "TAG");
+                    return p.Value;
+                }
+                else
+                {
+                    return this.Type;
+                }
             }
+           
         }
 
         public FHXParameter GetParameter(string name)
         {
-            bool has = this.Parameters.Any(s => s.Identifier == name);
+            bool has = HasParameter(name);
             return has ? this.Parameters.Single(s => s.Identifier == name) : null;
         }
 
@@ -89,7 +112,7 @@ namespace FHXTools.FHX
             {
                 s += Parent.Path();
             }
-            s += @"\" + this.GetName();
+            s += @"/" + this.GetName();
             return s;
         }
 
@@ -133,7 +156,9 @@ namespace FHXTools.FHX
             List<FHXObject> c = GetAllChildren();
             List<FHXParameter> p = new List<FHXParameter>();
 
-            foreach (FHXObject o in Children)
+            p.AddRange(this.Parameters);
+
+            foreach (FHXObject o in c)
             {
                 p.AddRange(o.Parameters);
             }
@@ -141,12 +166,39 @@ namespace FHXTools.FHX
             return p;
         }
 
+        public bool HasParameter(string name)
+        {
+            return this.Parameters.Any(i => i.Identifier == name);
+        }
+
+        public FHXObject GetChild(string name, bool deep = false)
+        {
+            List<FHXObject> c = deep ? GetAllChildren() : Children;
+            return c.Any(i => i.GetName() == name) ? c.Single(i => i.GetName() == name) : null;
+        }
+
+        public FHXObject GetChildFromPath(string path)
+        {
+            string[] hierarchy = path.Split('/');
+            FHXObject current = this;
+
+            foreach (string p in hierarchy)
+            {
+                current = current.GetChild(p);
+
+                if (current == null) return null; //Child not found
+            }
+
+            return current; // Returns the last child from the search
+        }
+
         public List<FHXSearchResult> Search(string query)
         {
             List<FHXSearchResult> res = new List<FHXSearchResult>();
 
             //Search Objects
-            List<FHXObject> os = GetAllChildren().Where(i => i.Name.Contains(query)).ToList();
+            List<FHXObject> os = GetAllChildren();
+            os = os.Where(i => i.Name.Contains(query)).ToList();
 
             foreach (var o in os)
             {
@@ -161,6 +213,89 @@ namespace FHXTools.FHX
             {
                 res.Add(new FHXSearchResult(p));
             }
+
+            return res;
+        }
+
+        public static FHXObject FromFile(string file)
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            string s = File.ReadAllText(file);
+            sw.Stop();
+            Console.WriteLine("Reading file took {0} ms", sw.ElapsedMilliseconds);
+
+            FHXObject root = FromString(s);
+            root.Name = System.IO.Path.GetFileNameWithoutExtension(file);
+            return root;
+        }
+
+        public static FHXObject FromString(string s)
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Restart();
+            List<Token> tokens = new List<Token>();
+            TokenStream ts = new TokenStream(s);
+
+            while (!ts.EOF())
+            {
+                Token t = ts.Next();
+                if (t != null) tokens.Add(t);
+            }
+            sw.Stop();
+            Console.WriteLine("Tokenizing file took {0} ms", sw.ElapsedMilliseconds);
+
+            sw.Restart();
+            Parser p = new Parser(tokens);
+            FHXObject root = p.ParseAll();
+            sw.Stop();
+            Console.WriteLine("Parsing file took {0} ms", sw.ElapsedMilliseconds);
+
+            BuildDeltaVHierarchy(root);
+
+            return root;
+        }
+
+        public static FHXCompareResultList CompareObjects(FHXObject a, FHXObject b)
+        {
+            FHXCompareResultList res = new FHXCompareResultList();
+
+            List<FHXParameter> psa = a.GetAllParameters();
+            List<FHXParameter> psb = b.GetAllParameters();
+
+            foreach (var pa in psa)
+            {
+                string rpath = pa.RelativePath(a);
+                //Check if b contains the parameter
+                if (psb.Any(i => i.RelativePath(b) == rpath))
+                {
+                    //If it contains it
+                    //FHXParameter pb = psb.Single(i => i.RelativePath(b) == rpath);
+                    FHXParameter pb = psb.Where(i => i.RelativePath(b) == rpath).ToArray()[0];
+                    if (pa.Value != pb.Value)
+                    {
+                        res.Add(a, pa, FHXCompareType.DIFFERENT);
+                        res.Add(b, pb, FHXCompareType.DIFFERENT);
+                    }
+                }
+                else
+                {
+                    //If not
+                    res.Add(a, pa, FHXCompareType.IN);
+                }
+            }
+            
+            foreach (var pb in psb)
+            {
+                string rpath = pb.RelativePath(b);
+                //Check if b contains the parameter
+                if (!psb.Any(i => i.RelativePath(b) == rpath))
+                {
+                    //If not
+                    res.Add(b, pb, FHXCompareType.IN);
+                }
+            }
+            
 
             return res;
         }
@@ -187,7 +322,7 @@ namespace FHXTools.FHX
                     FHXObject newChild = FUNCTION_BLOCK_DEFINITION.Single(i => i.GetName() == fb.GetParameter("DEFINITION").Value);
                     newChild.Name = fb.GetName();
                     parent.AddChild(newChild);
-                }               
+                }
             }
 
             //Removes the VALUE Objects and sets their parameters to their parent.
@@ -195,7 +330,7 @@ namespace FHXTools.FHX
             {
                 FHXObject parent = fb.Parent;
 
-                foreach(FHXParameter p in fb.Parameters)
+                foreach (FHXParameter p in fb.Parameters)
                 {
                     parent.AddParameter(p);
                     fb.SetParent(null);
@@ -204,6 +339,31 @@ namespace FHXTools.FHX
 
             //Replace ATTRIBUTE by ATTRIBUTE_INSTANCE when needed
             Console.WriteLine("");
+
+            //Removes the useless items by type
+            List<string> unused = new List<string>() { "WIRE", "GRAPHICS" };
+            foreach(string u in unused)
+            {
+                List<FHXObject> uc = AllChildren.Where(i => i.Type == u).ToList();
+                foreach (FHXObject fb in uc)
+                {
+                    fb.Parent.RemoveChild(fb);
+                    fb.SetParent(null);
+                }
+            }
+
+            //Removes the useless items by name
+            unused = new List<string>() { "RECTANGLE"};
+            foreach (string u in unused)
+            {
+                List<FHXObject> uc = AllChildren.Where(i => i.Name == u).ToList();
+                foreach (FHXObject fb in uc)
+                {
+                    fb.Parent.RemoveChild(fb);
+                    fb.SetParent(null);
+                }
+            }
+
         }
     }
 }

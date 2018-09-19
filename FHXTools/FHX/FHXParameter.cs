@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FHXTools.FHX
 {
-    class FHXParameter
+    public class FHXParameter
     {
         public FHXObject Parent { get; set; }
         public string Identifier { get; set; }
@@ -24,9 +24,31 @@ namespace FHXTools.FHX
             this.Parent = parent;
         }
 
-        public string Path()
+        public override string ToString()
         {
-            return Parent.Path() + @"\" + this.Identifier;
+            return this.Path;
+        }
+
+        public string RelativePath(FHXObject root)
+        {
+            FHXObject parent = this.Parent;
+            string path = this.Identifier;
+
+            while (parent != null && parent != root)
+            {
+                path = parent.GetName() + "/" + path;
+                parent = parent.Parent;
+            }
+
+            return path;
+        }
+
+        public string Path
+        {
+            get
+            {
+                return Parent.Path() + @"/" + this.Identifier;
+            }
         }
     }
 }

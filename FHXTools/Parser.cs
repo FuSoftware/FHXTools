@@ -105,12 +105,34 @@ namespace FHXTools
 
                     if(Peek().Type == TokenType.WHITESPACE)
                     {
-                        //New object
-                        FHXObject o = NewObject(s);
-                        currentObject.AddChild(o);
-                        currentObject = o;
-                        objects.Add(o);
-                        waitingForBody = true;
+                        int n;
+                        bool isNumeric = int.TryParse(s, out n);
+
+                        if (isNumeric)
+                        {
+                            //Cas où on a { 00 01 02 ... XX }
+                            if (currentObject.HasParameter("VALUE"))
+                            {
+                                FHXParameter p = currentObject.GetParameter("VALUE");
+                                p.Value = p.Value + " " + s;
+                            }
+                            else
+                            {
+                                FHXParameter p = new FHXParameter("VALUE", s);
+                                currentObject.AddParameter(p);
+                                parameters.Add(p);
+                            }
+                        }
+                        else
+                        {
+                            //New object
+                            FHXObject o = NewObject(s);
+                            currentObject.AddChild(o);
+                            currentObject = o;
+                            objects.Add(o);
+                            waitingForBody = true;
+                        }
+                        
                     }
                     else if (Peek().Type == TokenType.EQUAL)
                     {

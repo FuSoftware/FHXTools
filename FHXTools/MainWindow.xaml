@@ -5,24 +5,58 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FHXTools"
         mc:Ignorable="d"
-        Title="MainWindow" Height="764" Width="1024">
+        Title="MainWindow" Height="720" Width="1080">
     <Grid>
-        <TreeView Name="tvMain" SelectedItemChanged="tvMain_SelectedItemChanged" HorizontalAlignment="Left" Height="661" Margin="10,37,0,0" VerticalAlignment="Top" Width="300"/>
-        <Button Content="Ouvrir" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
-        <DataGrid Name ="gridParam" HorizontalAlignment="Left" Height="683" Margin="315,10,0,0" VerticalAlignment="Top" Width="387">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Parameter" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Value" IsReadOnly="True"/>
-            </DataGrid.Columns>
-        </DataGrid>
-        <Label Name="labelBottom" Content="Label" HorizontalAlignment="Left" Margin="10,698,0,0" VerticalAlignment="Top" Width="772"/>
-        <DataGrid Name ="gridSearch" HorizontalAlignment="Left" Height="656" Margin="707,37,0,0" VerticalAlignment="Top" Width="299">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Parameter" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Value" IsReadOnly="True"/>
-            </DataGrid.Columns>
-        </DataGrid>
-        <TextBox Name="tbSearch" HorizontalAlignment="Left" Height="23" Margin="707,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="219"/>
-        <Button Name="btnSearch" Content="Search" HorizontalAlignment="Left" Margin="931,10,0,0" VerticalAlignment="Top" Width="75" Click="btnSearch_Click"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="28" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+    
+        <DockPanel Grid.Row="0">
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_New" />
+                    <MenuItem Header="_Open" />
+                    <MenuItem Header="_Save" />
+                    <Separator />
+                    <MenuItem Header="_Exit" />
+                </MenuItem>
+
+                <MenuItem Header="_Tools">
+                    <MenuItem Header="_Comparison" Click="OpenComparison" />
+                    <MenuItem Header="_Search" Click="OpenSearchWindow" />
+                </MenuItem>
+
+                <MenuItem Header="_Tests">
+
+                </MenuItem>
+            </Menu>
+            <TextBox AcceptsReturn="True" />
+        </DockPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="28" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="28" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="2" Grid.Column="0" Name="labelBottom" Content="Label" />
+        
+            <TreeView Grid.Row="1" Grid.Column="0" Name="tvMain" SelectedItemChanged="tvMain_SelectedItemChanged"/>
+            <Button Grid.Row="0" Grid.Column="0" Content="Ouvrir" Click="Button_Click"/>
+            <DataGrid Grid.Row="1" Grid.Column="1" Name ="gridParam" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Parameter" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Value" IsReadOnly="True"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
     </Grid>
 </Window>

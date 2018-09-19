@@ -1,4 +1,5 @@
 ﻿using FHXTools.FHX;
+using FHXTools.Views;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -79,12 +80,16 @@ namespace FHXTools
             this.gridParam.Columns[2].Visibility = Visibility.Hidden; //Hides the Parent field
         }
 
-        private void btnSearch_Click(object sender, RoutedEventArgs e)
+        private void OpenSearchWindow(object sender, RoutedEventArgs e)
         {
-            string query = tbSearch.Text;
+            SearchWindow w = new SearchWindow(this.root);
+            w.Show();
+        }
 
-            List<FHXSearchResult> results = root.Search(query);
-            this.gridSearch.ItemsSource = results;
+        private void OpenComparison(object sender, RoutedEventArgs e)
+        {
+            ComparisonWindow w = new ComparisonWindow();
+            w.Show();
         }
     }
 }

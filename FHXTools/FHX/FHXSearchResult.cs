@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FHXTools.FHX
 {
-    class FHXSearchResult
+    public class FHXSearchResult
     {
         FHXObject Source { get; set; }
         FHXParameter ParamSource { get; set; }
@@ -27,7 +27,7 @@ namespace FHXTools.FHX
             {
                 if (this.ParamSource != null)
                 {
-                    return this.ParamSource.Path();
+                    return this.ParamSource.Path;
                 }
                 else
                 {
