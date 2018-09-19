@@ -58,10 +58,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AST\ASTNode.cs" />
-    <Compile Include="AST\NumNode.cs" />
-    <Compile Include="AST\StrNode.cs" />
-    <Compile Include="AST\VarNode.cs" />
     <Compile Include="FHX\FHXComparator.cs" />
     <Compile Include="FHX\FHXCompareResult.cs" />
     <Compile Include="FHX\FHXObject.cs" />
