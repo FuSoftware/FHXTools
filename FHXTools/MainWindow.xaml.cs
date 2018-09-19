@@ -25,7 +25,8 @@ namespace FHXTools
     /// </summary>
     public partial class MainWindow : Window
     {
-        FHXObject root;
+        FHXObject Root;
+        FHXObject Selected = null;
 
         public MainWindow()
         {
@@ -41,25 +42,25 @@ namespace FHXTools
 
         private void ChargerFichier(string file)
         {
-            root = FHXObject.FromFile(file);
-            FHXObject.BuildDeltaVHierarchy(root);
+            Root = FHXObject.FromFile(file);
+            FHXObject.BuildDeltaVHierarchy(Root);
 
-            this.tvMain.Items.Add(root.ToTreeViewItem(true));
+            this.tvMain.Items.Add(Root.ToTreeViewItem(true));
         }
 
         private void tvMain_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             TreeViewItem i = (TreeViewItem)e.NewValue;
-            FHXObject o = (FHXObject)i.Tag;
-            this.labelBottom.Content = o.Path();
+            Selected = (FHXObject)i.Tag;
+            this.labelBottom.Content = Selected.Path();
 
-            this.gridParam.ItemsSource = o.Parameters;
+            this.gridParam.ItemsSource = Selected.Parameters;
             this.gridParam.Columns[2].Visibility = Visibility.Hidden; //Hides the Parent field
         }
 
         private void OpenSearchWindow(object sender, RoutedEventArgs e)
         {
-            SearchWindow w = new SearchWindow(this.root);
+            SearchWindow w = new SearchWindow(this.Root);
             w.Show();
         }
 
@@ -67,6 +68,34 @@ namespace FHXTools
         {
             ComparisonWindow w = new ComparisonWindow();
             w.Show();
+        }
+
+        private void ExportExcel(object sender, RoutedEventArgs e)
+        {
+            if (Selected == null) return;
+            string sMessageBoxText = string.Format("Exporter l'objet {0} ?", Selected.Path());
+            string sCaption = "Export";
+
+            MessageBoxButton btnMessageBox = MessageBoxButton.YesNoCancel;
+            MessageBoxImage icnMessageBox = MessageBoxImage.Warning;
+
+            MessageBoxResult rsltMessageBox = MessageBox.Show(sMessageBoxText, sCaption, btnMessageBox, icnMessageBox);
+
+            switch (rsltMessageBox)
+            {
+                case MessageBoxResult.Yes:
+                    SaveFileDialog saveFileDialog = new SaveFileDialog();
+                    saveFileDialog.Filter = "Excel file (*.xlsx)|*.xlsx";
+                    if (saveFileDialog.ShowDialog() == true)
+                        FHXExcelExporter.ExportParameters(Selected, saveFileDialog.FileName);
+                    break;
+
+                case MessageBoxResult.No:
+                    return;
+
+                case MessageBoxResult.Cancel:
+                    return;
+            }            
         }
     }
 }

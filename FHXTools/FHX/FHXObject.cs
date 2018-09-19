@@ -312,13 +312,16 @@ namespace FHXTools.FHX
 
                 foreach(var a in ATTRIBUTE)
                 {
-                    //Adds the ATTRIBUTE_INSTANCE in the parent of the ATTRIBUTE
-                    attr.SetParent(null);
-                    a.Parent.AddChild(attr);
+                    if(a.Parent != null)
+                    {
+                        //Adds the ATTRIBUTE_INSTANCE in the parent of the ATTRIBUTE
+                        attr.SetParent(null);
+                        a.Parent.AddChild(attr);
 
-                    //Removes the ATTRIBUTE from its parent
-                    a.Parent.RemoveChild(a);
-                    a.SetParent(null);
+                        //Removes the ATTRIBUTE from its parent
+                        a.Parent.RemoveChild(a);
+                        a.SetParent(null);
+                    }
                 }
             }
 

@@ -19,6 +19,9 @@
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_File">
                     <MenuItem Header="_Open" Click="Button_Click" />
+                    <MenuItem Header="_Export">
+                        <MenuItem Header="_Excel" Click="ExportExcel" />
+                    </MenuItem>
                     <Separator />
                     <MenuItem Header="_Exit" />
                 </MenuItem>
@@ -47,7 +50,9 @@
             </Grid.ColumnDefinitions>
             <Label Grid.Row="1" Grid.Column="0" Name="labelBottom" Content="Label" />
 
-            <TreeView Grid.Row="0" Grid.Column="0" Name="tvMain" SelectedItemChanged="tvMain_SelectedItemChanged"/>
+            <TreeView Grid.Row="0" Grid.Column="0" Name="tvMain" SelectedItemChanged="tvMain_SelectedItemChanged">
+
+            </TreeView>
             <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" />
             <DataGrid Grid.Row="0" Grid.Column="2" Name ="gridParam" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <DataGrid.Columns>
