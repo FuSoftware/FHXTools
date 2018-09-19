@@ -39,7 +39,7 @@ namespace FHXTools.Views
         {
             string query = tbSearch.Text;
 
-            List<FHXSearchResult> results = root.Search(query);
+            results = root.Search(query);
             this.gridSearch.ItemsSource = results;
             this.gridSearch.Columns[0].Visibility = Visibility.Hidden; //Hides the Parent field
             this.gridSearch.Columns[1].Visibility = Visibility.Hidden; //Hides the Parent field
@@ -48,7 +48,7 @@ namespace FHXTools.Views
         private void ExportExcel(object sender, RoutedEventArgs e)
         {
             if (results == null) return;
-            string sMessageBoxText = string.Format("Exporter la comparaison ?");
+            string sMessageBoxText = string.Format("Exporter la recherche ?");
             string sCaption = "Export";
 
             MessageBoxButton btnMessageBox = MessageBoxButton.YesNoCancel;
