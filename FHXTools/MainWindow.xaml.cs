@@ -87,9 +87,31 @@ namespace FHXTools
                     SaveFileDialog saveFileDialog = new SaveFileDialog();
                     saveFileDialog.Filter = "Excel file (*.xlsx)|*.xlsx";
                     if (saveFileDialog.ShowDialog() == true)
-                        FHXExcelExporter.ExportParameters(Selected, saveFileDialog.FileName);
+                        FHXExporter.ExportParameters(Selected, saveFileDialog.FileName);
                     break;
             }            
+        }
+
+        private void ExportWord(object sender, RoutedEventArgs e)
+        {
+            if (Selected == null) return;
+            string sMessageBoxText = string.Format("Exporter l'objet {0} ?", Selected.Path());
+            string sCaption = "Export";
+
+            MessageBoxButton btnMessageBox = MessageBoxButton.YesNoCancel;
+            MessageBoxImage icnMessageBox = MessageBoxImage.Warning;
+
+            MessageBoxResult rsltMessageBox = MessageBox.Show(sMessageBoxText, sCaption, btnMessageBox, icnMessageBox);
+
+            switch (rsltMessageBox)
+            {
+                case MessageBoxResult.Yes:
+                    SaveFileDialog saveFileDialog = new SaveFileDialog();
+                    saveFileDialog.Filter = "Word file (*.docx)|*.docx";
+                    if (saveFileDialog.ShowDialog() == true)
+                        FHXExporter.ExportObjectWord(Selected, saveFileDialog.FileName);
+                    break;
+            }
         }
     }
 }

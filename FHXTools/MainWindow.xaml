@@ -21,6 +21,7 @@
                     <MenuItem Header="_Open" Click="Button_Click" />
                     <MenuItem Header="_Export">
                         <MenuItem Header="_Excel" Click="ExportExcel" />
+                        <MenuItem Header="_Word" Click="ExportWord" />
                     </MenuItem>
                     <Separator />
                     <MenuItem Header="_Exit" />

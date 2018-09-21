@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Diagnostics;
 using FHXTools.FHX;
+using Xceed.Words.NET;
 
 namespace FHXTools
 {
@@ -17,8 +18,18 @@ namespace FHXTools
             //TestTokens("{VALUE=\"testing\"}");
             //TestTokens("{VALUE=\"formula=\"\"I am a test\"\"!\"}");
             //TestTokensFile(@"S:\AFFAIRE\X_1111111_1_11 MASSOTTE\A2I\P_0107045_1_10 SLV Ixan\_27 - RS Dispersant R022\02 - Préalables - données d'entrées\Plans SLV\Export avant modification\PI-R602A.fhx");
-            TestTokensFile(@"S:\AFFAIRE\X_1111111_1_11 MASSOTTE\A2I\P_0107045_1_10 SLV Ixan\_27 - RS Dispersant R022\02 - Préalables - données d'entrées\Plans SLV\Export avant modification\SUS-INT-DISP.fhx");
+            //TestTokensFile(@"S:\AFFAIRE\X_1111111_1_11 MASSOTTE\A2I\P_0107045_1_10 SLV Ixan\_27 - RS Dispersant R022\02 - Préalables - données d'entrées\Plans SLV\Export avant modification\SUS-INT-DISP.fhx");
+            TestWord(@"D:\Test1.docx");
             Console.ReadLine();
+        }
+
+        public static void TestWord(string file)
+        {
+            using (var doc = DocX.Load(file))
+            {
+                
+                //doc.Save();
+            }
         }
 
         public static void TestTokensFile(string input)

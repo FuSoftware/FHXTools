@@ -45,7 +45,7 @@ namespace FHXTools.Views
                     SaveFileDialog saveFileDialog = new SaveFileDialog();
                     saveFileDialog.Filter = "Excel file (*.xlsx)|*.xlsx";
                     if (saveFileDialog.ShowDialog() == true)
-                        FHXExcelExporter.ExportComparison(results, saveFileDialog.FileName);
+                        FHXExporter.ExportComparison(results, saveFileDialog.FileName);
                     break;
             }
         }
