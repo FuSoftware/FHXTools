@@ -43,7 +43,7 @@ namespace FHXTools
         private void ChargerFichier(string file)
         {
             Root = FHXObject.FromFile(file);
-            FHXObject.BuildDeltaVHierarchy(Root);
+            FHXHierarchyBuilder.BuildDeltaVHierarchy(Root);
 
             this.tvMain.Items.Add(Root.ToTreeViewItem(true));
         }
