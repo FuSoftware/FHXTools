@@ -142,5 +142,50 @@ namespace FHXTools.FHX
             t.Rows[row].Cells[0].Paragraphs.First().Append(par.Identifier);
             t.Rows[row].Cells[1].Paragraphs.First().Append(par.Value);
         }
+
+        public static void ExportFHXToFile(FHXObject obj, string path)
+        {
+            File.WriteAllText(path, ExportFHX(obj));
+        }
+
+        public static string ExportFHX(FHXObject obj)
+        {
+            string s = "";
+
+            s += obj.Type + " ";
+
+            foreach (var param in obj.Parameters.Where(i => i.Mandatory))
+            {
+                string v = param.Type == "string" ? string.Format("\"{0}\"", param.Value) : param.Value;
+                s += string.Format("{0}={1} ", param.Identifier, v);
+            }
+
+            s += "\n{\n";
+
+            if (obj.Type == "ATTRIBUTE_INSTANCE")
+            {
+                s += "VALUE\n{\n";
+            }
+
+            foreach (var param in obj.Parameters.Where(i => i.Mandatory == false))
+            {
+                string v = param.Type == "string" ? string.Format("\"{0}\"", param.Value) : param.Value;
+                if (param.Value != "") s += string.Format("{0}={1}\n", param.Identifier, v);
+            }
+
+            foreach (var child in obj.Children)
+            {
+                s += ExportFHX(child);
+            }
+
+            if (obj.Type == "ATTRIBUTE_INSTANCE")
+            {
+                s += "}\n";
+            }
+
+            s += "}\n";
+
+            return s;
+        }
     }
 }

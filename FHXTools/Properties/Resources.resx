@@ -132,6 +132,9 @@
   <data name="Export" xml:space="preserve">
     <value>Export</value>
   </data>
+  <data name="FHX" xml:space="preserve">
+    <value>FHX</value>
+  </data>
   <data name="File" xml:space="preserve">
     <value>File</value>
   </data>

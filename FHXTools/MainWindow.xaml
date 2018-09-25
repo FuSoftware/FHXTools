@@ -23,6 +23,7 @@
                     <MenuItem Header="{x:Static p:Resources.Export}">
                         <MenuItem Header="{x:Static p:Resources.Excel}" Click="ExportExcel" />
                         <MenuItem Header="{x:Static p:Resources.Word}" Click="ExportWord" />
+                        <MenuItem Header="{x:Static p:Resources.FHX}" Click="ExportFHX" />
                     </MenuItem>
                     <Separator />
                     <MenuItem Header="{x:Static p:Resources.Exit}" />

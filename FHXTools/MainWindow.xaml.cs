@@ -113,5 +113,27 @@ namespace FHXTools
                     break;
             }
         }
+
+        private void ExportFHX(object sender, RoutedEventArgs e)
+        {
+            if (Selected == null) return;
+            string sMessageBoxText = string.Format("Exporter l'objet {0} ?", Selected.Path());
+            string sCaption = "Export";
+
+            MessageBoxButton btnMessageBox = MessageBoxButton.YesNoCancel;
+            MessageBoxImage icnMessageBox = MessageBoxImage.Warning;
+
+            MessageBoxResult rsltMessageBox = MessageBox.Show(sMessageBoxText, sCaption, btnMessageBox, icnMessageBox);
+
+            switch (rsltMessageBox)
+            {
+                case MessageBoxResult.Yes:
+                    SaveFileDialog saveFileDialog = new SaveFileDialog();
+                    saveFileDialog.Filter = "FHX file (*.fhx)|*.fhx";
+                    if (saveFileDialog.ShowDialog() == true)
+                        FHXExporter.ExportFHXToFile(Selected, saveFileDialog.FileName);
+                    break;
+            }
+        }
     }
 }

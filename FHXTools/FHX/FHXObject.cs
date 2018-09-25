@@ -282,6 +282,7 @@ namespace FHXTools.FHX
             }
 
             //Removes the VALUE Objects and sets their parameters to their parent.
+            
             List<FHXObject> VALUE = AllChildren.Where(i => i.Type == "VALUE").ToList();
             foreach (FHXObject fb in VALUE)
             {
@@ -293,6 +294,7 @@ namespace FHXTools.FHX
                     fb.SetParent(null);
                 }
             }
+            
 
             //Replace ATTRIBUTE by ATTRIBUTE_INSTANCE when needed
             List<FHXObject> ATTRIBUTE_INSTANCE = AllChildren.Where(i => i.Type == "ATTRIBUTE_INSTANCE").ToList();
@@ -323,8 +325,8 @@ namespace FHXTools.FHX
             }
 
             //Removes the useless items by type
-            List<string> unused_types = new List<string>() { "WIRE", "GRAPHICS", "CATEGORY", "FUNCTION_BLOCK_TEMPLATE", "FUNCTION_BLOCK_DEFINITION" };
-            List<string> unused_names = new List<string>() { "RECTANGLE", "POSITION", "ORIGIN", "END", "CATEGORY" };
+            List<string> unused_types = new List<string>() { "WIRE", "GRAPHICS", "FUNCTION_BLOCK_TEMPLATE", "FUNCTION_BLOCK_DEFINITION" };
+            List<string> unused_names = new List<string>() { "RECTANGLE", "POSITION", "ORIGIN", "END" };
             List<FHXObject> uc = AllChildren.Where(i => unused_types.Contains(i.Type) || unused_names.Contains(i.Name)).ToList();
             foreach (FHXObject fb in uc)
             {

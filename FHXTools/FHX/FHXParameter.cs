@@ -11,12 +11,34 @@ namespace FHXTools.FHX
         public FHXObject Parent { get; set; }
         public string Identifier { get; set; }
         public string Value { get; set; }
+        public bool Mandatory { get; set; }
+        public string Type
+        {
+            get
+            {
+                string v = this.Value;
+                int p;
+                if(v == "F" || v == "T")
+                {
+                    return "bool";
+                }
+                else if(int.TryParse(v, out p))
+                {
+                    return "number";
+                }
+                else
+                {
+                    return "string";
+                }
+            }
+        }
 
-        public FHXParameter(string identifier, string value, FHXObject parent = null)
+        public FHXParameter(string identifier, string value, bool mandatory = false, FHXObject parent = null)
         {
             this.Parent = parent;
             this.Identifier = identifier;
             this.Value = value;
+            this.Mandatory = mandatory;
         }
 
         public void SetParent(FHXObject parent = null)

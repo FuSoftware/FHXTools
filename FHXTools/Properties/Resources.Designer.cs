@@ -106,6 +106,15 @@ namespace FHXTools.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à FHX.
+        /// </summary>
+        public static string FHX {
+            get {
+                return ResourceManager.GetString("FHX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à File.
         /// </summary>
         public static string File {

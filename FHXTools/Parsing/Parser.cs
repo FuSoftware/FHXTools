@@ -151,12 +151,10 @@ namespace FHXTools
                         else
                         {
                             string value = Next().Value; //Retieves the parameter's value
-                            FHXParameter p = new FHXParameter(s, value);
+                            FHXParameter p = new FHXParameter(s, value, waitingForBody);
                             currentObject.AddParameter(p);
                             parameters.Add(p);
                         }
-
-                       
                     }
                     else
                     {
