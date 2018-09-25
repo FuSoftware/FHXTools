@@ -25,7 +25,7 @@ namespace FHXTools.FHX
         {
             get
             {
-                return this.ParamSource != null ? ParamSource.Path : this.Source.Path();
+                return this.ParamSource != null ? ParamSource.Path : this.Source.Path;
             }
         }
 

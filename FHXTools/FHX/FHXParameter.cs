@@ -9,7 +9,7 @@ namespace FHXTools.FHX
     public class FHXParameter
     {
         public FHXObject Parent { get; set; }
-        public string Identifier { get; set; }
+        public string Name { get; set; }
         public string Value { get; set; }
         public bool Mandatory { get; set; }
         public string Type
@@ -36,7 +36,7 @@ namespace FHXTools.FHX
         public FHXParameter(string identifier, string value, bool mandatory = false, FHXObject parent = null)
         {
             this.Parent = parent;
-            this.Identifier = identifier;
+            this.Name = identifier;
             this.Value = value;
             this.Mandatory = mandatory;
         }
@@ -54,7 +54,7 @@ namespace FHXTools.FHX
         public string RelativePath(FHXObject root)
         {
             FHXObject parent = this.Parent;
-            string path = this.Identifier;
+            string path = this.Name;
 
             while (parent != null && parent != root)
             {
@@ -67,7 +67,7 @@ namespace FHXTools.FHX
 
         public string Path
         {
-            get{ return Parent.Path() + @"/" + this.Identifier; }
+            get{ return Parent.Path + @"/" + this.Name; }
         }
     }
 }

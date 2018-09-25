@@ -139,7 +139,7 @@ namespace FHXTools.FHX
             }
             
 
-            t.Rows[row].Cells[0].Paragraphs.First().Append(par.Identifier);
+            t.Rows[row].Cells[0].Paragraphs.First().Append(par.Name);
             t.Rows[row].Cells[1].Paragraphs.First().Append(par.Value);
         }
 
@@ -157,7 +157,7 @@ namespace FHXTools.FHX
             foreach (var param in obj.Parameters.Where(i => i.Mandatory))
             {
                 string v = param.Type == "string" ? string.Format("\"{0}\"", param.Value) : param.Value;
-                s += string.Format("{0}={1} ", param.Identifier, v);
+                s += string.Format("{0}={1} ", param.Name, v);
             }
 
             s += "\n{\n";
@@ -170,7 +170,7 @@ namespace FHXTools.FHX
             foreach (var param in obj.Parameters.Where(i => i.Mandatory == false))
             {
                 string v = param.Type == "string" ? string.Format("\"{0}\"", param.Value) : param.Value;
-                if (param.Value != "") s += string.Format("{0}={1}\n", param.Identifier, v);
+                if (param.Value != "") s += string.Format("{0}={1}\n", param.Name, v);
             }
 
             foreach (var child in obj.Children)

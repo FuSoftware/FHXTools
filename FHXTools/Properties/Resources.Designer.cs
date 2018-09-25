@@ -106,6 +106,15 @@ namespace FHXTools.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Extract.
+        /// </summary>
+        public static string Extract {
+            get {
+                return ResourceManager.GetString("Extract", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à FHX.
         /// </summary>
         public static string FHX {
@@ -151,6 +160,15 @@ namespace FHXTools.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Run.
+        /// </summary>
+        public static string Run {
+            get {
+                return ResourceManager.GetString("Run", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Search.
         /// </summary>
         public static string Search {
@@ -165,6 +183,15 @@ namespace FHXTools.Properties {
         public static string Tests {
             get {
                 return ResourceManager.GetString("Tests", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Text.
+        /// </summary>
+        public static string Text {
+            get {
+                return ResourceManager.GetString("Text", resourceCulture);
             }
         }
         

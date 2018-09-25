@@ -34,7 +34,7 @@ namespace FHXTools.FHX
 
         public override string ToString()
         {
-            return this.Path();
+            return this.Path;
         }
 
         public void AddChild(FHXObject obj)
@@ -85,12 +85,12 @@ namespace FHXTools.FHX
             }
             else
             {
-                bool hasName = this.Parameters.Any(s => s.Identifier == "NAME" || s.Identifier == "TAG");
+                bool hasName = this.Parameters.Any(s => s.Name == "NAME" || s.Name == "TAG");
 
                 if (hasName)
                 {
 
-                    FHXParameter p = this.Parameters.Single(s => s.Identifier == "NAME" || s.Identifier == "TAG");
+                    FHXParameter p = this.Parameters.Single(s => s.Name == "NAME" || s.Name == "TAG");
                     return p.Value;
                 }
                 else
@@ -103,18 +103,21 @@ namespace FHXTools.FHX
         public FHXParameter GetParameter(string name)
         {
             bool has = HasParameter(name);
-            return has ? this.Parameters.Single(s => s.Identifier == name) : null;
+            return has ? this.Parameters.Single(s => s.Name == name) : null;
         }
 
-        public string Path()
+        public string Path
         {
-            string s = "";
-            if(Parent != null)
+            get
             {
-                s += Parent.Path();
+                string s = "";
+                if (Parent != null)
+                {
+                    s += Parent.Path;
+                }
+                s += @"/" + this.GetName();
+                return s;
             }
-            s += @"/" + this.GetName();
-            return s;
         }
 
         public FHXObject GetRoot()
@@ -168,7 +171,9 @@ namespace FHXTools.FHX
             return p;
         }
 
-        public bool HasParameter(string name) => this.Parameters.Any(i => i.Identifier == name);
+        public bool HasParameter(string name) => this.Parameters.Any(i => i.Name == name);
+
+        public bool HasChild(string name) => this.Children.Any(i => i.Name == name);
 
         public FHXObject GetChild(string name, bool deep = false)
         {
@@ -206,7 +211,7 @@ namespace FHXTools.FHX
 
             //Search Parameters
             List<FHXParameter> ps = GetAllParameters();
-            ps = ps.Where(i => i.Identifier.Contains(query) || i.Value.Contains(query)).ToList();
+            ps = ps.Where(i => i.Name.Contains(query) || i.Value.Contains(query)).ToList();
 
             foreach (var p in ps)
             {

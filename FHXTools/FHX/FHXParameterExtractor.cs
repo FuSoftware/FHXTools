@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSScriptLibrary;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,25 @@ namespace FHXTools.FHX
 {
     class FHXParameterExtractor
     {
+
+        public static List<KeyValuePair<string, string>> ExtractPattern(FHXObject root, string Pattern)
+        {
+            return ExtractPattern(root.GetAllParameters(), Pattern);
+        }
+
+        public static List<KeyValuePair<string,string>> ExtractPattern(List<FHXParameter> parameters, string Pattern)
+        {
+            dynamic script = CSScript.Evaluator.LoadMethod(Pattern);
+
+            List<KeyValuePair<string, string>> results = new List<KeyValuePair<string, string>>();
+
+            foreach (var parameter in parameters.Where(i => script.Validate(i)))
+            {
+                results.Add(new KeyValuePair<string, string>(parameter.Path , parameter.Value));
+            }
+
+            return results;
+        }
 
         public static List<string> ExtractList(FHXObject root, List<string> path)
         {

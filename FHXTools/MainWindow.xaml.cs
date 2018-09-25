@@ -52,7 +52,7 @@ namespace FHXTools
         {
             TreeViewItem i = (TreeViewItem)e.NewValue;
             Selected = (FHXObject)i.Tag;
-            this.labelBottom.Content = Selected.Path();
+            this.labelBottom.Content = Selected.Path;
 
             this.gridParam.ItemsSource = Selected.Parameters;
             this.gridParam.Columns[2].Visibility = Visibility.Hidden; //Hides the Parent field
@@ -70,10 +70,16 @@ namespace FHXTools
             w.Show();
         }
 
+        private void OpenExtractor(object sender, RoutedEventArgs e)
+        {
+            ExtractorWindow w = new ExtractorWindow(this.Root);
+            w.Show();
+        }
+
         private void ExportExcel(object sender, RoutedEventArgs e)
         {
             if (Selected == null) return;
-            string sMessageBoxText = string.Format("Exporter l'objet {0} ?", Selected.Path());
+            string sMessageBoxText = string.Format("Exporter l'objet {0} ?", Selected.Path);
             string sCaption = "Export";
 
             MessageBoxButton btnMessageBox = MessageBoxButton.YesNoCancel;
@@ -95,7 +101,7 @@ namespace FHXTools
         private void ExportWord(object sender, RoutedEventArgs e)
         {
             if (Selected == null) return;
-            string sMessageBoxText = string.Format("Exporter l'objet {0} ?", Selected.Path());
+            string sMessageBoxText = string.Format("Exporter l'objet {0} ?", Selected.Path);
             string sCaption = "Export";
 
             MessageBoxButton btnMessageBox = MessageBoxButton.YesNoCancel;
@@ -117,7 +123,7 @@ namespace FHXTools
         private void ExportFHX(object sender, RoutedEventArgs e)
         {
             if (Selected == null) return;
-            string sMessageBoxText = string.Format("Exporter l'objet {0} ?", Selected.Path());
+            string sMessageBoxText = string.Format("Exporter l'objet {0} ?", Selected.Path);
             string sCaption = "Export";
 
             MessageBoxButton btnMessageBox = MessageBoxButton.YesNoCancel;
