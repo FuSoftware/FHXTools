@@ -145,8 +145,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Data\Alarmes AI et PID.cs" />
-    <Compile Include="Data\Example Script.cs" />
+    <None Include="Data\Alarmes AI et PID.cs" />
+    <None Include="Data\Example Script.cs" />
     <Compile Include="FHX\FHXComparator.cs" />
     <Compile Include="FHX\FHXCompareResult.cs" />
     <Compile Include="FHX\FHXExporter.cs" />
