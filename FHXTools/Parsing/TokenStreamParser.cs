@@ -8,7 +8,7 @@ namespace FHXTools.Parsing
 {
     class TokenStreamParser : Parser
     {
-        TokenStream mTokenStream;
+        public TokenStream mTokenStream { get; }
         Token current;
 
         public TokenStreamParser(TokenStream token_stream)

@@ -1,15 +1,59 @@
-﻿using System;
+﻿using FHXTools.Parsing;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace FHXTools.FHX
 {
-    class FHXHierarchyBuilder
+    class FHXParserWrapper
     {
-        public static void BuildDeltaVHierarchy(FHXObject obj)
+        public static float ParsingPercent
+        {
+            get
+            {
+                return mParser == null ? 0 : mParser.mTokenStream.Input.DonePercent;
+            }
+        }
+        public static string State { get; set; }
+        public static float BuildingPercent { get; set; }
+
+        private static TokenStreamParser mParser = null;
+
+        static public FHXObject FromFile(string file)
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            string s = File.ReadAllText(file);
+            sw.Stop();
+            Console.WriteLine("Reading file took {0} ms", sw.ElapsedMilliseconds);
+
+            FHXObject root = FromString(s);
+            root.Name = Path.GetFileNameWithoutExtension(file);
+            return root;
+        }
+
+        static public FHXObject FromString(string s)
+        {
+            BuildingPercent = 0;
+            State = Properties.Resources.ParsingParsing;
+
+            Stopwatch sw = new Stopwatch();
+            sw.Restart();
+            TokenStream ts = new TokenStream(s);
+            sw.Restart();
+            mParser = new TokenStreamParser(ts);
+            FHXObject root = mParser.ParseAll();
+            sw.Stop();
+            Console.WriteLine("Parsing file took {0} ms", sw.ElapsedMilliseconds);
+            return root;
+        }
+
+        static public void BuildDeltaVHierarchy(FHXObject obj)
         {
             Stopwatch sw = new Stopwatch();
             sw.Start();
@@ -17,8 +61,9 @@ namespace FHXTools.FHX
             FHXObject root = obj.GetRoot();
             List<FHXObject> AllChildren = root.GetAllChildren();
 
-
             //Replace FBs with DEFINITION by their definition
+            State = Properties.Resources.ParsingClasses;
+            BuildingPercent = 25;
             List<FHXObject> FUNCTION_BLOCK = AllChildren.Where(i => i.Type == "FUNCTION_BLOCK" && i.Parameters.Any(j => j.Name == "DEFINITION")).ToList();
             List<FHXObject> FUNCTION_BLOCK_DEFINITION = AllChildren.Where(i => i.Type == "FUNCTION_BLOCK_DEFINITION").ToList();
             foreach (FHXObject fb in FUNCTION_BLOCK)
@@ -43,6 +88,8 @@ namespace FHXTools.FHX
             Console.WriteLine("{0} took {1}ms", "Loading classes", sw.ElapsedMilliseconds);
 
             //Removes the VALUE Objects and sets their parameters to their parent.
+            State = Properties.Resources.ParsingValues;
+            BuildingPercent = 40;
             sw.Restart();
             List<FHXObject> VALUE = AllChildren.Where(i => i.Type == "VALUE").ToList();
             foreach (FHXObject fb in VALUE)
@@ -60,6 +107,8 @@ namespace FHXTools.FHX
 
 
             //Replace ATTRIBUTE by ATTRIBUTE_INSTANCE when needed
+            State = Properties.Resources.ParsingAttributes;
+            BuildingPercent = 75;
             sw.Restart();
             List<FHXObject> ATTRIBUTE_INSTANCE = AllChildren.Where(i => i.Type == "ATTRIBUTE_INSTANCE").ToList();
             foreach (FHXObject attr in ATTRIBUTE_INSTANCE)
@@ -91,6 +140,8 @@ namespace FHXTools.FHX
             Console.WriteLine("{0} took {1}ms", "Replacing ATTRIBUTEs", sw.ElapsedMilliseconds);
 
             //Removes the useless items by type
+            State = Properties.Resources.ParsingCleaning;
+            BuildingPercent = 90;
             sw.Restart();
             List<string> unused_types = new List<string>() { "WIRE", "GRAPHICS", "FUNCTION_BLOCK_TEMPLATE", "FUNCTION_BLOCK_DEFINITION" };
             List<string> unused_names = new List<string>() { "RECTANGLE", "POSITION", "ORIGIN", "END" };
@@ -102,6 +153,8 @@ namespace FHXTools.FHX
             }
             sw.Stop();
             Console.WriteLine("{0} took {1}ms", "Clearing hierarchy", sw.ElapsedMilliseconds);
+            State = "Done";
+            BuildingPercent = 100;
         }
     }
 }

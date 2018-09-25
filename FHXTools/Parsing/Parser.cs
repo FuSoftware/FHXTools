@@ -9,7 +9,6 @@ namespace FHXTools.Parsing
 {
     abstract class Parser
     {
-
         public Parser()
         {
         }
@@ -36,9 +35,9 @@ namespace FHXTools.Parsing
             {
                 Token t = Peek();
 
-                if(t.Type == TokenType.COMMENT_START)
+                if (t.Type == TokenType.COMMENT_START)
                 {
-                    while(t.Type != TokenType.COMMENT_END)
+                    while (t.Type != TokenType.COMMENT_END)
                     {
                         t = Next();
                     }
@@ -50,7 +49,7 @@ namespace FHXTools.Parsing
                     //Skips whitespaces
                     Next();
                 }
-                else if(t.Type == TokenType.OPEN_BRACKET)
+                else if (t.Type == TokenType.OPEN_BRACKET)
                 {
                     if (waitingForBody)
                     {
@@ -71,12 +70,9 @@ namespace FHXTools.Parsing
                 {
                     string s = Next().Value;
 
-                    if(Peek().Type == TokenType.WHITESPACE)
+                    if (Peek().Type == TokenType.WHITESPACE)
                     {
-                        int n;
-                        bool isNumeric = int.TryParse(s, out n);
-
-                        if (isNumeric)
+                        if (IsHex(s) && s.Length == 2)
                         {
                             //Cas où on a { 00 01 02 ... XX }
                             if (currentObject.HasParameter("VALUE"))
@@ -100,7 +96,7 @@ namespace FHXTools.Parsing
                             objects.Add(o);
                             waitingForBody = true;
                         }
-                        
+
                     }
                     else if (Peek().Type == TokenType.EQUAL)
                     {
@@ -147,5 +143,21 @@ namespace FHXTools.Parsing
             o.Type = type;
             return o;
         }
+
+        private static bool IsHex(IEnumerable<char> chars)
+        {
+            bool isHex;
+            foreach (var c in chars)
+            {
+                isHex = ((c >= '0' && c <= '9') ||
+                         (c >= 'a' && c <= 'f') ||
+                         (c >= 'A' && c <= 'F'));
+
+                if (!isHex)
+                    return false;
+            }
+            return true;
+        }
     }
+    
 }

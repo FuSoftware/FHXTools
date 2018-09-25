@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,6 +28,7 @@ namespace FHXTools
     {
         FHXObject Root;
         FHXObject Selected = null;
+        ObjectLoadingWindow w;
 
         public MainWindow()
         {
@@ -42,10 +44,9 @@ namespace FHXTools
 
         private void ChargerFichier(string file)
         {
-            Root = FHXObject.FromFile(file);
-            FHXHierarchyBuilder.BuildDeltaVHierarchy(Root);
-
-            this.tvMain.Items.Add(Root.ToTreeViewItem(true));
+            this.Root = FHXParserWrapper.FromFile(file);
+            FHXParserWrapper.BuildDeltaVHierarchy(this.Root);
+            this.tvMain.Items.Add(this.Root.ToTreeViewItem(true, false));
         }
 
         private void tvMain_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -56,6 +57,26 @@ namespace FHXTools
 
             this.gridParam.ItemsSource = Selected.Parameters;
             this.gridParam.Columns[2].Visibility = Visibility.Hidden; //Hides the Parent field
+        }
+
+        private void TreeViewItem_Expanded(object sender, RoutedEventArgs e)
+        {
+            TreeViewItem tvi = e.OriginalSource as TreeViewItem;
+            if (tvi != null)
+            {
+                foreach(TreeViewItem tvic in tvi.Items)
+                {
+                    if (tvic.Items.Count == 0)
+                    {
+                        FHXObject o = (FHXObject)tvic.Tag;
+
+                        foreach (FHXObject child in o.Children)
+                        {
+                            tvic.Items.Add(child.ToTreeViewItem(true, false));
+                        }
+                    }
+                }
+            }
         }
 
         private void OpenSearchWindow(object sender, RoutedEventArgs e)

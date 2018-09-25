@@ -70,10 +70,10 @@ namespace FHXTools.Views
                 return;
             }
 
-            FHXObject a = FHXObject.FromFile(n1);
+            FHXObject a = FHXParserWrapper.FromFile(n1);
             //a = a.Children.Single(i => i.Type == "MODULE");
 
-            FHXObject b = FHXObject.FromFile(n2);
+            FHXObject b = FHXParserWrapper.FromFile(n2);
             //b = b.Children.Single(i => i.Type == "MODULE");
 
             if (a == null || b == null)

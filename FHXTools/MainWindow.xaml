@@ -54,7 +54,7 @@
             </Grid.ColumnDefinitions>
             <Label Grid.Row="1" Grid.Column="0" Name="labelBottom" Content="Label" />
 
-            <TreeView Grid.Row="0" Grid.Column="0" Name="tvMain" SelectedItemChanged="tvMain_SelectedItemChanged">
+            <TreeView Grid.Row="0" Grid.Column="0" Name="tvMain" TreeViewItem.Expanded="TreeViewItem_Expanded" SelectedItemChanged="tvMain_SelectedItemChanged">
 
             </TreeView>
             <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" />

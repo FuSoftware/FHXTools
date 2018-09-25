@@ -150,6 +150,21 @@
   <data name="OpenSecondFile" xml:space="preserve">
     <value>Open the second file</value>
   </data>
+  <data name="ParsingAttributes" xml:space="preserve">
+    <value>Setting attributes</value>
+  </data>
+  <data name="ParsingClasses" xml:space="preserve">
+    <value>Setting classes</value>
+  </data>
+  <data name="ParsingCleaning" xml:space="preserve">
+    <value>Cleaning</value>
+  </data>
+  <data name="ParsingParsing" xml:space="preserve">
+    <value>Parsing</value>
+  </data>
+  <data name="ParsingValues" xml:space="preserve">
+    <value>Assigning values</value>
+  </data>
   <data name="Run" xml:space="preserve">
     <value>Run</value>
   </data>

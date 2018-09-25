@@ -148,10 +148,10 @@
     <Compile Include="FHX\FHXComparator.cs" />
     <Compile Include="FHX\FHXCompareResult.cs" />
     <Compile Include="FHX\FHXExporter.cs" />
-    <Compile Include="FHX\FHXHierarchyBuilder.cs" />
     <Compile Include="FHX\FHXObject.cs" />
     <Compile Include="FHX\FHXParameter.cs" />
     <Compile Include="FHX\FHXParameterExtractor.cs" />
+    <Compile Include="FHX\FHXParserWrapper.cs" />
     <Compile Include="FHX\FHXSearchResult.cs" />
     <Compile Include="Parsing\Parser.cs" />
     <Compile Include="Parsing\TokenListParser.cs" />
@@ -174,6 +174,9 @@
     <Compile Include="Views\ExtractorWindow.xaml.cs">
       <DependentUpon>ExtractorWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ObjectLoadingWindow.xaml.cs">
+      <DependentUpon>ObjectLoadingWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SearchWindow.xaml.cs">
       <DependentUpon>SearchWindow.xaml</DependentUpon>
     </Compile>
@@ -195,6 +198,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ExtractorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ObjectLoadingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

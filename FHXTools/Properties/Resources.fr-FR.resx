@@ -147,6 +147,21 @@
   <data name="OpenSecondFile" xml:space="preserve">
     <value>Selectionner le second fichier</value>
   </data>
+  <data name="ParsingAttributes" xml:space="preserve">
+    <value>Chargement des attributs</value>
+  </data>
+  <data name="ParsingClasses" xml:space="preserve">
+    <value>Chargement des classes</value>
+  </data>
+  <data name="ParsingCleaning" xml:space="preserve">
+    <value>Nettoyage</value>
+  </data>
+  <data name="ParsingParsing" xml:space="preserve">
+    <value>Lecture du fichier</value>
+  </data>
+  <data name="ParsingValues" xml:space="preserve">
+    <value>Chargement des valeurs</value>
+  </data>
   <data name="Run" xml:space="preserve">
     <value>Lancer</value>
   </data>

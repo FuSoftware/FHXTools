@@ -160,6 +160,51 @@ namespace FHXTools.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Setting attributes.
+        /// </summary>
+        public static string ParsingAttributes {
+            get {
+                return ResourceManager.GetString("ParsingAttributes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Setting classes.
+        /// </summary>
+        public static string ParsingClasses {
+            get {
+                return ResourceManager.GetString("ParsingClasses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Cleaning.
+        /// </summary>
+        public static string ParsingCleaning {
+            get {
+                return ResourceManager.GetString("ParsingCleaning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Parsing.
+        /// </summary>
+        public static string ParsingParsing {
+            get {
+                return ResourceManager.GetString("ParsingParsing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Assigning values.
+        /// </summary>
+        public static string ParsingValues {
+            get {
+                return ResourceManager.GetString("ParsingValues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Run.
         /// </summary>
         public static string Run {

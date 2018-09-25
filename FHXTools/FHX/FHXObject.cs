@@ -125,18 +125,18 @@ namespace FHXTools.FHX
             return (this.Parent == null) ? this : this.Parent.GetRoot();
         }
 
-        public TreeViewItem ToTreeViewItem(bool recursive)
+        public TreeViewItem ToTreeViewItem(bool children, bool recursive)
         {
             TreeViewItem item = new TreeViewItem();
             item.Header = this.GetName();
             item.Tag = this;
 
-            if (recursive)
+            if (children)
             {
                 IEnumerable<FHXObject> query = Children.OrderBy(i => i.GetName());
                 foreach (FHXObject o in query)
                 {
-                    item.Items.Add(o.ToTreeViewItem(true));
+                    item.Items.Add(o.ToTreeViewItem(recursive, recursive));
                 }
             }
             
@@ -219,45 +219,6 @@ namespace FHXTools.FHX
             }
 
             return res;
-        }
-
-        public static FHXObject FromFile(string file)
-        {
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-            string s = File.ReadAllText(file);
-            sw.Stop();
-            Console.WriteLine("Reading file took {0} ms", sw.ElapsedMilliseconds);
-
-            FHXObject root = FromString(s);
-            root.Name = System.IO.Path.GetFileNameWithoutExtension(file);
-            return root;
-        }
-
-        public static FHXObject FromString(string s)
-        {
-            Stopwatch sw = new Stopwatch();
-            sw.Restart();
-            List<Token> tokens = new List<Token>();
-            TokenStream ts = new TokenStream(s);
-            /*
-            while (!ts.EOF())
-            {
-                Token t = ts.Next();
-                if (t != null) tokens.Add(t);
-            }
-            sw.Stop();
-            Console.WriteLine("Tokenizing file took {0} ms", sw.ElapsedMilliseconds);
-            */
-            sw.Restart();
-            Parser p = new TokenStreamParser(ts);
-            FHXObject root = p.ParseAll();
-            sw.Stop();
-            Console.WriteLine("Parsing file took {0} ms", sw.ElapsedMilliseconds);
-
-            FHXHierarchyBuilder.BuildDeltaVHierarchy(root);
-
-            return root;
         }
     }
 }

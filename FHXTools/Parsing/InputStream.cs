@@ -9,6 +9,23 @@ namespace FHXTools.Parsing
         public long Pos { set;  get; }
         public long Col { set;  get; }
         public long Line { set;  get; }
+
+        public long Remaining
+        {
+            get
+            {
+                return this.input.Length - this.Pos;
+            }
+        }
+
+        public long DonePercent
+        {
+            get
+            {
+                return (this.Pos * 100) / this.input.Length;
+            }
+        }
+
         private char[] input;
 
         public InputStream(string input)
