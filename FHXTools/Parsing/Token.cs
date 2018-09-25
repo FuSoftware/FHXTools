@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace FHXTools
+namespace FHXTools.Parsing
 {
     enum TokenType
     {

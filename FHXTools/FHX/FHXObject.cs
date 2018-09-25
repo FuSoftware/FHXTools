@@ -1,4 +1,4 @@
-﻿using FHXTools.Utils;
+﻿using FHXTools.Parsing;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -240,7 +240,7 @@ namespace FHXTools.FHX
             sw.Restart();
             List<Token> tokens = new List<Token>();
             TokenStream ts = new TokenStream(s);
-
+            /*
             while (!ts.EOF())
             {
                 Token t = ts.Next();
@@ -248,9 +248,9 @@ namespace FHXTools.FHX
             }
             sw.Stop();
             Console.WriteLine("Tokenizing file took {0} ms", sw.ElapsedMilliseconds);
-
+            */
             sw.Restart();
-            Parser p = new Parser(tokens);
+            Parser p = new TokenStreamParser(ts);
             FHXObject root = p.ParseAll();
             sw.Stop();
             Console.WriteLine("Parsing file took {0} ms", sw.ElapsedMilliseconds);

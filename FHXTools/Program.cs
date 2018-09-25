@@ -8,10 +8,10 @@ using System.Diagnostics;
 using FHXTools.FHX;
 using Xceed.Words.NET;
 using System.Net;
+using FHXTools.Parsing;
 
 namespace FHXTools
 {
-
     class Program
     {
         public static void Main()
@@ -73,7 +73,7 @@ namespace FHXTools
 
         public static FHXObject ParseTokens(List<Token> tokens)
         {
-            Parser p = new Parser(tokens);
+            Parser p = new TokenListParser(tokens);
             FHXObject o = p.ParseAll();
             return o;
         }

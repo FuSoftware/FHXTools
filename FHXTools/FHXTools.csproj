@@ -154,6 +154,8 @@
     <Compile Include="FHX\FHXParameterExtractor.cs" />
     <Compile Include="FHX\FHXSearchResult.cs" />
     <Compile Include="Parsing\Parser.cs" />
+    <Compile Include="Parsing\TokenListParser.cs" />
+    <Compile Include="Parsing\TokenStreamParser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\Resources.fr-FR.Designer.cs">
       <DependentUpon>Resources.fr-FR.resx</DependentUpon>

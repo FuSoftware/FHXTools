@@ -5,51 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using FHXTools.FHX;
 
-namespace FHXTools
+namespace FHXTools.Parsing
 {
-    class Parser
+    abstract class Parser
     {
-        List<Token> mTokens;
-        Token current;
-        int i;
-        
-        public Parser(List<Token> tokens)
+
+        public Parser()
         {
-            this.mTokens = tokens;
-            i = 0;
         }
 
-        Token ReadNextToken()
-        {
-            return mTokens[i++];
-        }
-
-        Token Peek()
-        {
-            if (current == null)
-            {
-                current = this.ReadNextToken();
-            }
-
-            return current;
-        }
-
-        Token Next()
-        {
-            Token t = current;
-            current = null;
-
-            if (t == null)
-            {
-                t = this.ReadNextToken();
-            }
-            return t;
-        }
-
-        bool EOF()
-        {
-            return i >= mTokens.Count;
-        }
+        protected abstract Token ReadNextToken();
+        protected abstract Token Peek();
+        protected abstract Token Next();
+        protected abstract bool EOF();
 
         public FHXObject ParseAll()
         {
@@ -141,6 +109,7 @@ namespace FHXTools
                         if (Peek().Type == TokenType.WHITESPACE)
                         {
                             Next();
+
                             FHXObject o = new FHXObject();
                             o.Name = s;
                             currentObject.AddChild(o);

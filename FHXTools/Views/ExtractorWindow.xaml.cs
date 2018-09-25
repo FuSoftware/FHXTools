@@ -31,8 +31,7 @@ namespace FHXTools.Views
 
         private void Run(object sender, RoutedEventArgs e)
         {
-            ListFHXParameterExtractor.ExtractPattern(root, tbScript.Text);
-
+            //FHXParameterExtractor.ExtractPattern(root, tbScript.Text);
         }
 
         private void ImportRoutine(object sender, RoutedEventArgs e)
