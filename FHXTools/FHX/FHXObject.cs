@@ -45,7 +45,7 @@ namespace FHXTools.FHX
 
         public void RemoveChild(FHXObject obj)
         {
-            Children.Remove(obj);
+            if(Children.Contains(obj)) Children.Remove(obj);
         }
 
         public void AddParameter(FHXParameter p)

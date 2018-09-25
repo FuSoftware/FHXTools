@@ -44,9 +44,13 @@ namespace FHXTools
 
         private void ChargerFichier(string file)
         {
-            this.Root = FHXParserWrapper.FromFile(file);
-            FHXParserWrapper.BuildDeltaVHierarchy(this.Root);
-            this.tvMain.Items.Add(this.Root.ToTreeViewItem(true, false));
+            var t = new Thread(() => 
+            { 
+                this.Root = FHXParserWrapper.FromFile(file);
+                FHXParserWrapper.BuildDeltaVHierarchy(this.Root);
+                this.tvMain.Items.Add(this.Root.ToTreeViewItem(true, false));
+            });
+            t.Start();
         }
 
         private void tvMain_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FHXTools.FHX
 {
-    class FHXParserWrapper
+    public class FHXParserWrapper
     {
         public static float ParsingPercent
         {
@@ -66,24 +66,17 @@ namespace FHXTools.FHX
             BuildingPercent = 25;
             List<FHXObject> FUNCTION_BLOCK = AllChildren.Where(i => i.Type == "FUNCTION_BLOCK" && i.Parameters.Any(j => j.Name == "DEFINITION")).ToList();
             List<FHXObject> FUNCTION_BLOCK_DEFINITION = AllChildren.Where(i => i.Type == "FUNCTION_BLOCK_DEFINITION").ToList();
+            
             foreach (FHXObject fb in FUNCTION_BLOCK)
             {
-                FHXObject parent = fb.Parent;
-                fb.Parent.RemoveChild(fb);
-                fb.SetParent(null);
-
-                if (FUNCTION_BLOCK_DEFINITION.Any(i => i.GetName() == fb.GetParameter("DEFINITION").Value))
-                {
-                    foreach (FHXObject newChild in FUNCTION_BLOCK_DEFINITION.Where(i => i.GetName() == fb.GetParameter("DEFINITION").Value))
-                    {
-                        newChild.Name = fb.GetName();
-                        newChild.Type = "FUNCTION_BLOCK";
-                        newChild.Parent.RemoveChild(newChild);
-                        newChild.SetParent(null);
-                        parent.AddChild(newChild);
-                    }
-                }
+                ProcessFB(fb, FUNCTION_BLOCK_DEFINITION);
             }
+            /*
+            Parallel.ForEach(FUNCTION_BLOCK, fb =>
+            {
+                ProcessFB(fb, FUNCTION_BLOCK_DEFINITION);
+            });
+            */
             sw.Stop();
             Console.WriteLine("{0} took {1}ms", "Loading classes", sw.ElapsedMilliseconds);
 
@@ -113,29 +106,14 @@ namespace FHXTools.FHX
             List<FHXObject> ATTRIBUTE_INSTANCE = AllChildren.Where(i => i.Type == "ATTRIBUTE_INSTANCE").ToList();
             foreach (FHXObject attr in ATTRIBUTE_INSTANCE)
             {
-                FHXObject parent = attr.Parent;
-
-                List<FHXObject> ATTRIBUTE = parent.GetAllChildren().Where(i => i.Type == "ATTRIBUTE" && i.GetName() == attr.GetName()).ToList();
-
-                if (ATTRIBUTE.Count > 1)
-                {
-                    Console.WriteLine("Multiple instances of {0} found", attr.GetName());
-                }
-
-                foreach (var a in ATTRIBUTE)
-                {
-                    if (a.Parent != null)
-                    {
-                        //Adds the ATTRIBUTE_INSTANCE in the parent of the ATTRIBUTE
-                        attr.SetParent(null);
-                        a.Parent.AddChild(attr);
-
-                        //Removes the ATTRIBUTE from its parent
-                        a.Parent.RemoveChild(a);
-                        a.SetParent(null);
-                    }
-                }
+                ProcessAttribute(attr);
             }
+            /*
+            Parallel.ForEach(ATTRIBUTE_INSTANCE, attr =>
+            {
+                ProcessAttribute(attr);
+            });
+            */
             sw.Stop();
             Console.WriteLine("{0} took {1}ms", "Replacing ATTRIBUTEs", sw.ElapsedMilliseconds);
 
@@ -155,6 +133,53 @@ namespace FHXTools.FHX
             Console.WriteLine("{0} took {1}ms", "Clearing hierarchy", sw.ElapsedMilliseconds);
             State = "Done";
             BuildingPercent = 100;
+        }
+
+        private static void ProcessFB(FHXObject fb, List<FHXObject> FUNCTION_BLOCK_DEFINITION)
+        {
+            FHXObject parent = fb.Parent;
+            fb.Parent.RemoveChild(fb);
+            fb.SetParent(null);
+
+            if (FUNCTION_BLOCK_DEFINITION.Any(i => i.GetName() == fb.GetParameter("DEFINITION").Value))
+            {
+                foreach (FHXObject newChild in FUNCTION_BLOCK_DEFINITION.Where(i => i.GetName() == fb.GetParameter("DEFINITION").Value))
+                {
+                    newChild.Name = fb.GetName();
+                    newChild.Type = "FUNCTION_BLOCK";
+                    newChild.Parent.RemoveChild(newChild);
+                    newChild.SetParent(null);
+                    parent.AddChild(newChild);
+                }
+            }
+        }
+
+        private static void ProcessAttribute(FHXObject attr)
+        {
+            FHXObject parent = attr.Parent;
+
+            if (parent == null) return;
+            List<FHXObject> ATTRIBUTE = parent.GetAllChildren();
+            ATTRIBUTE = ATTRIBUTE.Where(i => i.Type == "ATTRIBUTE" && i.GetName() == attr.GetName()).ToList();
+
+            if (ATTRIBUTE.Count > 1)
+            {
+                Console.WriteLine("Multiple instances of {0} found", attr.GetName());
+            }
+
+            foreach (var a in ATTRIBUTE)
+            {
+                if (a.Parent != null)
+                {
+                    //Adds the ATTRIBUTE_INSTANCE in the parent of the ATTRIBUTE
+                    attr.SetParent(null);
+                    a.Parent.AddChild(attr);
+
+                    //Removes the ATTRIBUTE from its parent
+                    a.Parent.RemoveChild(a);
+                    a.SetParent(null);
+                }
+            }
         }
     }
 }

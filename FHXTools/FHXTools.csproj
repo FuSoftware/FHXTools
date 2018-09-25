@@ -145,6 +145,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Data\Alarmes AI et PID.cs" />
+    <Compile Include="Data\Example Script.cs" />
     <Compile Include="FHX\FHXComparator.cs" />
     <Compile Include="FHX\FHXCompareResult.cs" />
     <Compile Include="FHX\FHXExporter.cs" />
@@ -232,6 +234,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Data\Benchmark.xlsx" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
