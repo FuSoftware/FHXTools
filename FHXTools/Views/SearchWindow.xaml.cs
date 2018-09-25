@@ -49,7 +49,7 @@ namespace FHXTools.Views
         {
             if (results == null) return;
             string sMessageBoxText = string.Format("Exporter la recherche ?");
-            string sCaption = "Export";
+            string sCaption = Properties.Resources.Export;
 
             MessageBoxButton btnMessageBox = MessageBoxButton.YesNoCancel;
             MessageBoxImage icnMessageBox = MessageBoxImage.Warning;

@@ -32,7 +32,7 @@ namespace FHXTools.Views
         {
             if (results == null) return;
             string sMessageBoxText = string.Format("Exporter la comparaison ?");
-            string sCaption = "Export";
+            string sCaption = Properties.Resources.Export;
 
             MessageBoxButton btnMessageBox = MessageBoxButton.YesNoCancel;
             MessageBoxImage icnMessageBox = MessageBoxImage.Warning;
@@ -56,12 +56,12 @@ namespace FHXTools.Views
             string n2 = "";
 
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
-            openFileDialog1.Title = "Open the first FHX File";
+            openFileDialog1.Title = Properties.Resources.OpenFirstFile;
             if (openFileDialog1.ShowDialog() == true)
                 n1 = openFileDialog1.FileName;
 
             OpenFileDialog openFileDialog2 = new OpenFileDialog();
-            openFileDialog2.Title = "Open the second FHX File";
+            openFileDialog2.Title = Properties.Resources.OpenSecondFile;
             if (openFileDialog2.ShowDialog() == true)
                 n2 = openFileDialog2.FileName;
 
@@ -78,7 +78,7 @@ namespace FHXTools.Views
 
             if (a == null || b == null)
             {
-                MessageBox.Show("Error loading one of the two objects");
+                MessageBox.Show(Properties.Resources.ErrorLoading);
                 return;
             }
 

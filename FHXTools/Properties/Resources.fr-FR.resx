@@ -118,45 +118,36 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Comparison" xml:space="preserve">
-    <value>Comparison</value>
+    <value>Comparaison</value>
   </data>
   <data name="ErrorLoading" xml:space="preserve">
-    <value>Error while loading one of the objects</value>
-  </data>
-  <data name="Excel" xml:space="preserve">
-    <value>Excel</value>
+    <value>Une erreur est surevenue durant l'ouverture des fichiers.</value>
   </data>
   <data name="Exit" xml:space="preserve">
-    <value>Exit</value>
+    <value>Quitter</value>
   </data>
   <data name="Export" xml:space="preserve">
-    <value>Export</value>
+    <value>Exporter</value>
   </data>
   <data name="File" xml:space="preserve">
-    <value>File</value>
+    <value>Fichier</value>
   </data>
   <data name="Open" xml:space="preserve">
-    <value>Open</value>
+    <value>Ouvrir</value>
   </data>
   <data name="OpenFirstFile" xml:space="preserve">
-    <value>Open the first file</value>
+    <value>Selectionner le premier fichier</value>
   </data>
   <data name="OpenSecondFile" xml:space="preserve">
-    <value>Open the second file</value>
+    <value>Selectionner le second fichier</value>
   </data>
   <data name="Search" xml:space="preserve">
-    <value>Search</value>
-  </data>
-  <data name="Tests" xml:space="preserve">
-    <value>Tests</value>
+    <value>Rechercher</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>FHX Tools</value>
+    <value>Outils FHX</value>
   </data>
   <data name="Tools" xml:space="preserve">
-    <value>Tools</value>
-  </data>
-  <data name="Word" xml:space="preserve">
-    <value>Word</value>
+    <value>Outils</value>
   </data>
 </root>
