@@ -88,6 +88,7 @@
     <Compile Include="FHX\FHXHierarchyBuilder.cs" />
     <Compile Include="FHX\FHXObject.cs" />
     <Compile Include="FHX\FHXParameter.cs" />
+    <Compile Include="FHX\FHXParameterExtractor.cs" />
     <Compile Include="FHX\FHXSearchResult.cs" />
     <Compile Include="Parsing\Parser.cs" />
     <Compile Include="Program.cs" />
