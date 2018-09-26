@@ -59,20 +59,36 @@ namespace FHXTools.FHX
         public string RelativePath(FHXObject root)
         {
             FHXObject parent = this.Parent;
-            string path = this.Name;
+            string path = "";
 
             while (parent != null && parent != root)
             {
-                path = parent.GetName() + "/" + path;
+                path = "/" + parent.Name + path;
                 parent = parent.Parent;
             }
 
-            return path;
+            return path + "." + this.Name;
+        }
+
+        public FHXObject Module
+        {
+            get
+            {
+                return HasModule ? this.GetParentFromType("MODULE") : new FHXObject("", "");
+            } 
+        }
+
+        public bool HasModule
+        {
+            get
+            {
+                return this.GetParentFromType("MODULE") != null;
+            }
         }
 
         public string Path
         {
-            get{ return Parent.Path + @"/" + this.Name; }
+            get{ return Parent.Path + "." + this.Name; }
         }
     }
 }

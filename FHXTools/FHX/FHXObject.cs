@@ -19,16 +19,55 @@ namespace FHXTools.FHX
         public FHXObject Parent { get; set; }
 
         public string Type { get; set; }
-        public string Name { get; set; }
+        public string mName { get; set; }
+        public string Name
+        {
+            get
+            {
+                if (this.mName != "" && this.mName != null) return this.mName;
+
+                if (this.Type == "SIMPLE_IO_CHANNEL")
+                {
+                    return string.Format("CH{0}", this.GetParameter("POSITION").Value);
+                }
+                else if (this.Type == "SERIAL_IO_PORT")
+                {
+                    return string.Format("P{0}", this.GetParameter("POSITION").Value);
+                }
+                else if (this.Type == "SERIAL_IO_DEVICE")
+                {
+                    return string.Format("I{0}", this.GetParameter("INDEX").Value);
+                }
+                else if (this.Type == "SIMPLE_IO_CARD" || this.Type == "SERIAL_IO_CARD")
+                {
+                    return string.Format("{0}/C{1}", this.GetParameter("CONTROLLER").Value, this.GetParameter("CARD_SLOT").Value);
+                }
+                else
+                {
+                    bool hasName = this.Parameters.Any(s => s.Name == "NAME" || s.Name == "TAG");
+
+                    if (hasName)
+                    {
+
+                        FHXParameter p = this.Parameters.Single(s => s.Name == "NAME" || s.Name == "TAG");
+                        return p.Value;
+                    }
+                    else
+                    {
+                        return this.Type;
+                    }
+                }
+            }
+        }
 
         public FHXObject()
         {
-            this.Name = "";
+            this.mName = "";
         }
 
         public FHXObject(string type, string name = "")
         {
-            this.Name = name;
+            this.mName = name;
             this.Type = type;
         }
 
@@ -63,43 +102,6 @@ namespace FHXTools.FHX
             this.Parent = parent;
         }
 
-        public string GetName()
-        {
-            if (this.Name != "" && this.Name != null) return this.Name;
-
-            if(this.Type == "SIMPLE_IO_CHANNEL")
-            {
-                return string.Format("CH{0}", this.GetParameter("POSITION").Value);
-            }
-            else if (this.Type == "SERIAL_IO_PORT")
-            {
-                return string.Format("P{0}", this.GetParameter("POSITION").Value);
-            }
-            else if (this.Type == "SERIAL_IO_DEVICE")
-            {
-                return string.Format("I{0}", this.GetParameter("INDEX").Value);
-            }
-            else if(this.Type == "SIMPLE_IO_CARD" || this.Type == "SERIAL_IO_CARD")
-            {
-                return string.Format("{0}/C{1}", this.GetParameter("CONTROLLER").Value, this.GetParameter("CARD_SLOT").Value);
-            }
-            else
-            {
-                bool hasName = this.Parameters.Any(s => s.Name == "NAME" || s.Name == "TAG");
-
-                if (hasName)
-                {
-
-                    FHXParameter p = this.Parameters.Single(s => s.Name == "NAME" || s.Name == "TAG");
-                    return p.Value;
-                }
-                else
-                {
-                    return this.Type;
-                }
-            }
-        }
-
         public FHXParameter GetParameter(string name)
         {
             bool has = HasParameter(name);
@@ -115,7 +117,7 @@ namespace FHXTools.FHX
                 {
                     s += Parent.Path;
                 }
-                s += @"/" + this.GetName();
+                s += @"/" + this.Name;
                 return s;
             }
         }
@@ -144,12 +146,12 @@ namespace FHXTools.FHX
         public TreeViewItem ToTreeViewItem(bool children, bool recursive)
         {
             TreeViewItem item = new TreeViewItem();
-            item.Header = this.GetName();
+            item.Header = this.Name;
             item.Tag = this;
 
             if (children)
             {
-                IEnumerable<FHXObject> query = Children.OrderBy(i => i.GetName());
+                IEnumerable<FHXObject> query = Children.OrderBy(i => i.Name);
                 foreach (FHXObject o in query)
                 {
                     item.Items.Add(o.ToTreeViewItem(recursive, recursive));
@@ -189,12 +191,12 @@ namespace FHXTools.FHX
 
         public bool HasParameter(string name) => this.Parameters.Any(i => i.Name == name);
 
-        public bool HasChild(string name) => this.Children.Any(i => i.Name == name);
+        public bool HasChild(string name) => this.Children.Any(i => i.mName == name);
 
         public FHXObject GetChild(string name, bool deep = false)
         {
             List<FHXObject> c = deep ? GetAllChildren() : Children;
-            return c.Any(i => i.GetName() == name) ? c.Single(i => i.GetName() == name) : null;
+            return c.Any(i => i.Name == name) ? c.Single(i => i.Name == name) : null;
         }
 
         public FHXObject GetChildFromPath(string path)
@@ -218,7 +220,7 @@ namespace FHXTools.FHX
 
             //Search Objects
             List<FHXObject> os = GetAllChildren();
-            os = os.Where(i => i.Name.Contains(query) || i.Path.Contains(query)).ToList();
+            os = os.Where(i => i.mName.Contains(query) || i.Path.Contains(query)).ToList();
 
             foreach (var o in os)
             {

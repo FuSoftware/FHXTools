@@ -1,4 +1,5 @@
-﻿using FHXTools.FHX;
+﻿using CSScriptLibrary;
+using FHXTools.FHX;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -33,8 +34,17 @@ namespace FHXTools.Views
 
         private void Run(object sender, RoutedEventArgs e)
         {
-            results = FHXParameterExtractor.ExtractPattern(root, tbScript.Text);
-            this.gridResults.ItemsSource = results;
+            try
+            {
+                dynamic script = CSScript.Evaluator.LoadMethod(tbScript.Text);
+                results = FHXParameterExtractor.ExtractPattern(root, script);
+                this.gridResults.ItemsSource = results;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error while loading script : " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            
         }
 
         private void ExportExcel(object sender, RoutedEventArgs e)

@@ -33,7 +33,7 @@ namespace FHXTools.FHX
             Console.WriteLine("Reading file took {0} ms", sw.ElapsedMilliseconds);
 
             FHXObject root = FromString(s);
-            root.Name = Path.GetFileNameWithoutExtension(file);
+            root.mName = Path.GetFileNameWithoutExtension(file);
             return root;
         }
 
@@ -126,7 +126,7 @@ namespace FHXTools.FHX
             sw.Restart();
             List<string> unused_types = new List<string>() { "WIRE", "GRAPHICS", "FUNCTION_BLOCK_TEMPLATE", "FUNCTION_BLOCK_DEFINITION" };
             List<string> unused_names = new List<string>() { "RECTANGLE", "POSITION", "ORIGIN", "END" };
-            List<FHXObject> uc = AllChildren.Where(i => unused_types.Contains(i.Type) || unused_names.Contains(i.Name)).ToList();
+            List<FHXObject> uc = AllChildren.Where(i => unused_types.Contains(i.Type) || unused_names.Contains(i.mName)).ToList();
             foreach (FHXObject fb in uc)
             {
                 fb.Parent.RemoveChild(fb);
@@ -144,11 +144,11 @@ namespace FHXTools.FHX
             fb.Parent.RemoveChild(fb);
             fb.SetParent(null);
 
-            if (FUNCTION_BLOCK_DEFINITION.Any(i => i.GetName() == fb.GetParameter("DEFINITION").Value))
+            if (FUNCTION_BLOCK_DEFINITION.Any(i => i.Name == fb.GetParameter("DEFINITION").Value))
             {
-                foreach (FHXObject newChild in FUNCTION_BLOCK_DEFINITION.Where(i => i.GetName() == fb.GetParameter("DEFINITION").Value))
+                foreach (FHXObject newChild in FUNCTION_BLOCK_DEFINITION.Where(i => i.Name == fb.GetParameter("DEFINITION").Value))
                 {
-                    newChild.Name = fb.GetName();
+                    newChild.mName = fb.Name;
                     newChild.Type = "FUNCTION_BLOCK";
                     newChild.Parent.RemoveChild(newChild);
                     newChild.SetParent(null);
@@ -163,11 +163,11 @@ namespace FHXTools.FHX
 
             if (parent == null) return;
             List<FHXObject> ATTRIBUTE = parent.GetAllChildren();
-            ATTRIBUTE = ATTRIBUTE.Where(i => i.Type == "ATTRIBUTE" && i.GetName() == attr.GetName()).ToList();
+            ATTRIBUTE = ATTRIBUTE.Where(i => i.Type == "ATTRIBUTE" && i.Name == attr.Name).ToList();
 
             if (ATTRIBUTE.Count > 1)
             {
-                Console.WriteLine("Multiple instances of {0} found", attr.GetName());
+                Console.WriteLine("Multiple instances of {0} found", attr.Name);
             }
 
             foreach (var a in ATTRIBUTE)

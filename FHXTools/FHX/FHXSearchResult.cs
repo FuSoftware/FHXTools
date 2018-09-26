@@ -33,7 +33,7 @@ namespace FHXTools.FHX
         {
             get
             {
-                return (this.ParamSource != null) ? this.ParamSource.Value : this.Source.GetName();
+                return (this.ParamSource != null) ? this.ParamSource.Value : this.Source.Name;
             }
         }
     }

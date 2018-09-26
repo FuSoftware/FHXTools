@@ -110,18 +110,18 @@ namespace FHXTools.FHX
                 {
                     string area = "";
                     string tag = "";
-                    FHXObject module = param.GetParentFromType("MODULE");
+                    FHXObject module = param.Module;
 
                     if(module != null)
                     {
-                        area = module.GetParameter("AREA").Value;
+                        area = module.GetParameter("PLANT_AREA").Value;
                         tag = module.GetParameter("TAG").Value;
                     }
 
                     sht.Cells[i, 1].Value = param.Path;
                     sht.Cells[i, 2].Value = area;
                     sht.Cells[i, 3].Value = tag;
-                    sht.Cells[i, 4].Value = param.Name;
+                    sht.Cells[i, 4].Value = module == null ? param.Parent.Name + "." + param.Name : param.RelativePath(module);
                     sht.Cells[i, 5].Value = param.Value;
                     i++;
                 }
@@ -134,7 +134,7 @@ namespace FHXTools.FHX
         {
             using (var doc = DocX.Create(file))
             {
-                Paragraph p = doc.InsertParagraph(obj.GetName());
+                Paragraph p = doc.InsertParagraph(obj.Name);
                 p.Alignment = Alignment.center;
   
                 ExportObjectInDoc(obj, doc);
@@ -145,7 +145,7 @@ namespace FHXTools.FHX
         private static void ExportObjectInDoc(FHXObject obj, DocX doc, int level = 0)
         {
             doc.InsertSection();
-            Paragraph p = doc.InsertParagraph(obj.GetName()).Heading((HeadingType)level).Bold().UnderlineStyle(UnderlineStyle.singleLine);
+            Paragraph p = doc.InsertParagraph(obj.Name).Heading((HeadingType)level).Bold().UnderlineStyle(UnderlineStyle.singleLine);
             p.Alignment = Alignment.left;
 
             if(obj.Parameters.Count > 0)

@@ -10,15 +10,13 @@ namespace FHXTools.FHX
     class FHXParameterExtractor
     {
 
-        public static List<FHXParameter> ExtractPattern(FHXObject root, string Pattern)
+        public static List<FHXParameter> ExtractPattern(FHXObject root, dynamic script)
         {
-            return ExtractPattern(root.GetAllParameters(), Pattern);
+            return ExtractPattern(root.GetAllParameters(), script);
         }
 
-        public static List<FHXParameter> ExtractPattern(List<FHXParameter> parameters, string Pattern)
+        public static List<FHXParameter> ExtractPattern(List<FHXParameter> parameters, dynamic script)
         {
-            dynamic script = CSScript.Evaluator.LoadMethod(Pattern);
-
             List<FHXParameter> results = new List<FHXParameter>();
 
             foreach (var parameter in parameters.Where(i => script.Validate(i)))

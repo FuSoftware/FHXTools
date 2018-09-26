@@ -107,7 +107,7 @@ namespace FHXTools.Parsing
                             Next();
 
                             FHXObject o = new FHXObject();
-                            o.Name = s;
+                            o.mName = s;
                             currentObject.AddChild(o);
                             currentObject = o;
                             objects.Add(o);
