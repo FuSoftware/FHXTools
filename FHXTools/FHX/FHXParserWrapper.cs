@@ -178,6 +178,8 @@ namespace FHXTools.FHX
                     attr.SetParent(null);
                     a.Parent.AddChild(attr);
 
+                    attr.AddParameter(a.GetParameter("TYPE"));
+
                     //Removes the ATTRIBUTE from its parent
                     a.Parent.RemoveChild(a);
                     a.SetParent(null);

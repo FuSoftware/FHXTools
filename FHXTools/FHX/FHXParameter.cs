@@ -12,7 +12,7 @@ namespace FHXTools.FHX
         public string Name { get; set; }
         public string Value { get; set; }
         public bool Mandatory { get; set; }
-        public string Type
+        public string VariableType
         {
             get
             {
@@ -30,6 +30,14 @@ namespace FHXTools.FHX
                 {
                     return "string";
                 }
+            }
+        }
+
+        public string Type
+        {
+            get
+            {
+                return this.Parent.GetParameter("TYPE") == null ? "" : this.Parent.GetParameter("TYPE") .Value;
             }
         }
 

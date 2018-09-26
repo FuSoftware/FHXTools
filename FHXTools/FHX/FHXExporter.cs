@@ -195,7 +195,7 @@ namespace FHXTools.FHX
 
             foreach (var param in obj.Parameters.Where(i => i.Mandatory))
             {
-                string v = param.Type == "string" ? string.Format("\"{0}\"", param.Value) : param.Value;
+                string v = param.VariableType == "string" ? string.Format("\"{0}\"", param.Value) : param.Value;
                 s += string.Format("{0}={1} ", param.Name, v);
             }
 
@@ -208,7 +208,7 @@ namespace FHXTools.FHX
 
             foreach (var param in obj.Parameters.Where(i => i.Mandatory == false))
             {
-                string v = param.Type == "string" ? string.Format("\"{0}\"", param.Value) : param.Value;
+                string v = param.VariableType == "string" ? string.Format("\"{0}\"", param.Value) : param.Value;
                 if (param.Value != "") s += string.Format("{0}={1}\n", param.Name, v);
             }
 
