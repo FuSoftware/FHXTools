@@ -205,6 +205,24 @@ namespace FHXTools.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à References.
+        /// </summary>
+        public static string References {
+            get {
+                return ResourceManager.GetString("References", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Refresh.
+        /// </summary>
+        public static string Refresh {
+            get {
+                return ResourceManager.GetString("Refresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Results.
         /// </summary>
         public static string Results {

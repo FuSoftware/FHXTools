@@ -1,0 +1,30 @@
+﻿<Window x:Class="FHXTools.Views.ReferenceWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FHXTools.Views"
+        xmlns:p = "clr-namespace:FHXTools.Properties"
+        mc:Ignorable="d"
+        Title="ReferenceWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="28" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <DockPanel Grid.Row="0">
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="{x:Static p:Resources.File}">
+                    <MenuItem Header="{x:Static p:Resources.Refresh}" Click="Refresh" />
+                    <MenuItem Header="{x:Static p:Resources.Export}" Click="ExportExcel" />
+                </MenuItem>
+            </Menu>
+            <TextBox AcceptsReturn="True" />
+        </DockPanel>
+        <DataGrid Name="gridResults" Grid.Row="1"/>
+    </Grid>
+</Window>

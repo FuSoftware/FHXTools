@@ -162,6 +162,12 @@
   <data name="ParsingValues" xml:space="preserve">
     <value>Chargement des valeurs</value>
   </data>
+  <data name="References" xml:space="preserve">
+    <value>Références</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Rafraichir</value>
+  </data>
   <data name="Results" xml:space="preserve">
     <value>Résultats</value>
   </data>

@@ -88,6 +88,12 @@ namespace FHXTools
             w.Show();
         }
 
+        private void OpenReferences(object sender, RoutedEventArgs e)
+        {
+            ReferenceWindow w = new ReferenceWindow(this.Root);
+            w.Show();
+        }
+
         private void OpenComparison(object sender, RoutedEventArgs e)
         {
             ComparisonWindow w = new ComparisonWindow();

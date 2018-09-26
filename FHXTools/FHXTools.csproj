@@ -155,6 +155,7 @@
     <Compile Include="FHX\FHXParameter.cs" />
     <Compile Include="FHX\FHXParameterExtractor.cs" />
     <Compile Include="FHX\FHXParserWrapper.cs" />
+    <Compile Include="FHX\FHXReferenceSearch.cs" />
     <Compile Include="FHX\FHXSearchResult.cs" />
     <Compile Include="Parsing\Parser.cs" />
     <Compile Include="Parsing\TokenListParser.cs" />
@@ -179,6 +180,9 @@
     </Compile>
     <Compile Include="Views\ObjectLoadingWindow.xaml.cs">
       <DependentUpon>ObjectLoadingWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ReferenceWindow.xaml.cs">
+      <DependentUpon>ReferenceWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SearchWindow.xaml.cs">
       <DependentUpon>SearchWindow.xaml</DependentUpon>
@@ -205,6 +209,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ObjectLoadingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ReferenceWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

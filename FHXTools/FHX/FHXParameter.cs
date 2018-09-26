@@ -98,5 +98,10 @@ namespace FHXTools.FHX
         {
             get{ return Parent.Path + "." + this.Name; }
         }
+
+        public string DeltaVPath
+        {
+            get { return "/" + this.RelativePath(Module); }
+        }
     }
 }

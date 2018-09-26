@@ -130,6 +130,34 @@ namespace FHXTools.FHX
             }
         }
 
+        public static void ExportReferences(List<FHXReference> data, string file)
+        {
+            using (var pkg = new ExcelPackage())
+            {
+                var wbk = pkg.Workbook;
+                var sht = wbk.Worksheets.Add("Parameters");
+
+                sht.Cells[1, 1].Value = "Source";
+                sht.Cells[1, 2].Value = "Source Value";
+                sht.Cells[1, 3].Value = "Usage";
+                sht.Cells[1, 4].Value = "Usage Value";
+
+                int i = 2;
+
+                foreach (var reference in data)
+                {
+
+                    sht.Cells[i, 1].Value = reference.Source.Path;
+                    sht.Cells[i, 2].Value = reference.Source.Value;
+                    sht.Cells[i, 3].Value = reference.Usage.Path;
+                    sht.Cells[i, 3].Value = reference.Usage.Value;
+                    i++;
+                }
+
+                pkg.SaveAs(new FileInfo(file));
+            }
+        }
+
         public static void ExportObjectWord(FHXObject obj, string file)
         {
             using (var doc = DocX.Create(file))

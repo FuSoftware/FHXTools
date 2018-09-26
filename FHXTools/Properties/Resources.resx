@@ -165,6 +165,12 @@
   <data name="ParsingValues" xml:space="preserve">
     <value>Assigning values</value>
   </data>
+  <data name="References" xml:space="preserve">
+    <value>References</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
   <data name="Results" xml:space="preserve">
     <value>Results</value>
   </data>
