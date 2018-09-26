@@ -10,20 +10,20 @@ namespace FHXTools.FHX
     class FHXParameterExtractor
     {
 
-        public static List<KeyValuePair<string, string>> ExtractPattern(FHXObject root, string Pattern)
+        public static List<FHXParameter> ExtractPattern(FHXObject root, string Pattern)
         {
             return ExtractPattern(root.GetAllParameters(), Pattern);
         }
 
-        public static List<KeyValuePair<string,string>> ExtractPattern(List<FHXParameter> parameters, string Pattern)
+        public static List<FHXParameter> ExtractPattern(List<FHXParameter> parameters, string Pattern)
         {
             dynamic script = CSScript.Evaluator.LoadMethod(Pattern);
 
-            List<KeyValuePair<string, string>> results = new List<KeyValuePair<string, string>>();
+            List<FHXParameter> results = new List<FHXParameter>();
 
             foreach (var parameter in parameters.Where(i => script.Validate(i)))
             {
-                results.Add(new KeyValuePair<string, string>(parameter.Path , parameter.Value));
+                results.Add(parameter);
             }
 
             return results;

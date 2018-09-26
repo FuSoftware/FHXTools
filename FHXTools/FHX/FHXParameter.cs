@@ -46,6 +46,11 @@ namespace FHXTools.FHX
             this.Parent = parent;
         }
 
+        public FHXObject GetParentFromType(string type)
+        {
+            return this.Parent.GetParentFromType(type);
+        }
+
         public override string ToString()
         {
             return this.Path;

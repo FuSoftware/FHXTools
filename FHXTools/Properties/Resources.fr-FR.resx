@@ -162,6 +162,12 @@
   <data name="ParsingValues" xml:space="preserve">
     <value>Chargement des valeurs</value>
   </data>
+  <data name="Results" xml:space="preserve">
+    <value>Résultats</value>
+  </data>
+  <data name="Routine" xml:space="preserve">
+    <value>Routine</value>
+  </data>
   <data name="Run" xml:space="preserve">
     <value>Lancer</value>
   </data>

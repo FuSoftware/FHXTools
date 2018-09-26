@@ -19,9 +19,12 @@
         <DockPanel Grid.Row="0">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="{x:Static p:Resources.File}">
-                    <MenuItem Header="{x:Static p:Resources.Open}" Click="ImportRoutine" />
-                    <MenuItem Header="{x:Static p:Resources.Export}">
-                        <MenuItem Header="{x:Static p:Resources.Text}" Click="ExportRoutine" />
+                    <MenuItem Header="{x:Static p:Resources.Routine}">
+                        <MenuItem Header="{x:Static p:Resources.Open}" Click="ImportRoutine" />
+                        <MenuItem Header="{x:Static p:Resources.Export}" Click="ExportRoutine" />
+                    </MenuItem>
+                    <MenuItem Header="{x:Static p:Resources.Results}">
+                        <MenuItem Header="{x:Static p:Resources.Export}" Click="ExportExcel" />
                     </MenuItem>
                     <MenuItem Header="{x:Static p:Resources.Run}" Click="Run"/>
                 </MenuItem>

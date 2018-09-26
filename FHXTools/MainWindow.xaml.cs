@@ -28,7 +28,6 @@ namespace FHXTools
     {
         FHXObject Root;
         FHXObject Selected = null;
-        ObjectLoadingWindow w;
 
         public MainWindow()
         {

@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FHXTools.Views"
         mc:Ignorable="d"
+        xmlns:p = "clr-namespace:FHXTools.Properties"
         Title="ComparisonWindow" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
@@ -17,10 +18,10 @@
 
         <DockPanel Grid.Row="0">
             <Menu DockPanel.Dock="Top">
-                <MenuItem Header="_File">
-                    <MenuItem Header="_Open" Click="Compare" />
-                    <MenuItem Header="_Export">
-                        <MenuItem Header="_Excel" Click="ExportExcel" />
+                <MenuItem Header="{x:Static p:Resources.File}">
+                    <MenuItem Header="{x:Static p:Resources.Open}" Click="Compare" />
+                    <MenuItem Header="{x:Static p:Resources.Export}">
+                        <MenuItem Header="{x:Static p:Resources.Excel}" Click="ExportExcel" />
                     </MenuItem>
                 </MenuItem>
             </Menu>

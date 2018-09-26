@@ -165,6 +165,12 @@
   <data name="ParsingValues" xml:space="preserve">
     <value>Assigning values</value>
   </data>
+  <data name="Results" xml:space="preserve">
+    <value>Results</value>
+  </data>
+  <data name="Routine" xml:space="preserve">
+    <value>Routine</value>
+  </data>
   <data name="Run" xml:space="preserve">
     <value>Run</value>
   </data>

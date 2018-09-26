@@ -91,6 +91,45 @@ namespace FHXTools.FHX
             }
         }
 
+        public static void ExportParameterList(List<FHXParameter> data, string file)
+        {
+            using (var pkg = new ExcelPackage())
+            {
+                var wbk = pkg.Workbook;
+                var sht = wbk.Worksheets.Add("Parameters");
+
+                sht.Cells[1, 1].Value = "Path";
+                sht.Cells[1, 2].Value = "Area";
+                sht.Cells[1, 3].Value = "Module";
+                sht.Cells[1, 4].Value = "Parameter";
+                sht.Cells[1, 5].Value = "Value";
+
+                int i = 2;
+
+                foreach (var param in data)
+                {
+                    string area = "";
+                    string tag = "";
+                    FHXObject module = param.GetParentFromType("MODULE");
+
+                    if(module != null)
+                    {
+                        area = module.GetParameter("AREA").Value;
+                        tag = module.GetParameter("TAG").Value;
+                    }
+
+                    sht.Cells[i, 1].Value = param.Path;
+                    sht.Cells[i, 2].Value = area;
+                    sht.Cells[i, 3].Value = tag;
+                    sht.Cells[i, 4].Value = param.Name;
+                    sht.Cells[i, 5].Value = param.Value;
+                    i++;
+                }
+
+                pkg.SaveAs(new FileInfo(file));
+            }
+        }
+
         public static void ExportObjectWord(FHXObject obj, string file)
         {
             using (var doc = DocX.Create(file))

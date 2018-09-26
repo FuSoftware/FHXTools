@@ -23,6 +23,8 @@ namespace FHXTools.Views
     public partial class ExtractorWindow : Window
     {
         FHXObject root = null;
+        List<FHXParameter> results;
+
         public ExtractorWindow(FHXObject root)
         {
             this.root = root;
@@ -31,8 +33,30 @@ namespace FHXTools.Views
 
         private void Run(object sender, RoutedEventArgs e)
         {
-            List<KeyValuePair<string, string>> p = FHXParameterExtractor.ExtractPattern(root, tbScript.Text);
-            this.gridResults.ItemsSource = p;
+            results = FHXParameterExtractor.ExtractPattern(root, tbScript.Text);
+            this.gridResults.ItemsSource = results;
+        }
+
+        private void ExportExcel(object sender, RoutedEventArgs e)
+        {
+            if (results == null) return;
+            string sMessageBoxText = string.Format("Exporter la comparaison ?");
+            string sCaption = Properties.Resources.Export;
+
+            MessageBoxButton btnMessageBox = MessageBoxButton.YesNoCancel;
+            MessageBoxImage icnMessageBox = MessageBoxImage.Warning;
+
+            MessageBoxResult rsltMessageBox = MessageBox.Show(sMessageBoxText, sCaption, btnMessageBox, icnMessageBox);
+
+            switch (rsltMessageBox)
+            {
+                case MessageBoxResult.Yes:
+                    SaveFileDialog saveFileDialog = new SaveFileDialog();
+                    saveFileDialog.Filter = "Excel file (*.xlsx)|*.xlsx";
+                    if (saveFileDialog.ShowDialog() == true)
+                        FHXExporter.ExportParameterList(results, saveFileDialog.FileName);
+                    break;
+            }
         }
 
         private void ImportRoutine(object sender, RoutedEventArgs e)

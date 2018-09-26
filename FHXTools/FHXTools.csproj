@@ -147,6 +147,7 @@
     </ApplicationDefinition>
     <None Include="Data\Alarmes AI et PID.cs" />
     <None Include="Data\Example Script.cs" />
+    <None Include="Data\Consignes PID.cs" />
     <Compile Include="FHX\FHXComparator.cs" />
     <Compile Include="FHX\FHXCompareResult.cs" />
     <Compile Include="FHX\FHXExporter.cs" />

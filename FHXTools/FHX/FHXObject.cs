@@ -125,6 +125,22 @@ namespace FHXTools.FHX
             return (this.Parent == null) ? this : this.Parent.GetRoot();
         }
 
+        public FHXObject GetParentFromType(string type)
+        {
+            if (this.Parent == null)
+            {
+                return null;
+            }
+            else if(this.Type == type)
+            {
+                return this;
+            }
+            else
+            {
+                return this.Parent.GetParentFromType(type);
+            }
+        }
+
         public TreeViewItem ToTreeViewItem(bool children, bool recursive)
         {
             TreeViewItem item = new TreeViewItem();
