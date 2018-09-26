@@ -50,6 +50,9 @@ namespace FHXTools.FHX
             FHXObject root = mParser.ParseAll();
             sw.Stop();
             Console.WriteLine("Parsing file took {0} ms", sw.ElapsedMilliseconds);
+
+            mParser.mTokenStream.Input.Clear();
+
             return root;
         }
 

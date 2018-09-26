@@ -202,7 +202,7 @@ namespace FHXTools.FHX
 
             //Search Objects
             List<FHXObject> os = GetAllChildren();
-            os = os.Where(i => i.Name.Contains(query)).ToList();
+            os = os.Where(i => i.Name.Contains(query) || i.Path.Contains(query)).ToList();
 
             foreach (var o in os)
             {
@@ -211,7 +211,7 @@ namespace FHXTools.FHX
 
             //Search Parameters
             List<FHXParameter> ps = GetAllParameters();
-            ps = ps.Where(i => i.Name.Contains(query) || i.Value.Contains(query)).ToList();
+            ps = ps.Where(i => i.Name.Contains(query) || i.Path.Contains(query) || i.Value.Contains(query)).ToList();
 
             foreach (var p in ps)
             {

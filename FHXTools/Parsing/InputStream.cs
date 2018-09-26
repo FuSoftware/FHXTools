@@ -72,5 +72,10 @@ namespace FHXTools.Parsing
         {
             throw new Exception(msg + " (" + Line + ":" + Col + ")");
         }
+
+        public void Clear()
+        {
+            this.input = new char[0];
+        }
     }
 }

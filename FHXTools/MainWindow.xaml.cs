@@ -48,7 +48,7 @@ namespace FHXTools
             { 
                 this.Root = FHXParserWrapper.FromFile(file);
                 FHXParserWrapper.BuildDeltaVHierarchy(this.Root);
-                this.tvMain.Items.Add(this.Root.ToTreeViewItem(true, false));
+				this.tvMain.Dispatcher.BeginInvoke(new Action(delegate { this.tvMain.Items.Add(this.Root.ToTreeViewItem(true, false)); })); 
             });
             t.Start();
         }

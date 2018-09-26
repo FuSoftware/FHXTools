@@ -31,7 +31,8 @@ namespace FHXTools.Views
 
         private void Run(object sender, RoutedEventArgs e)
         {
-            //FHXParameterExtractor.ExtractPattern(root, tbScript.Text);
+            List<KeyValuePair<string, string>> p = FHXParameterExtractor.ExtractPattern(root, tbScript.Text);
+            this.gridResults.ItemsSource = p;
         }
 
         private void ImportRoutine(object sender, RoutedEventArgs e)
