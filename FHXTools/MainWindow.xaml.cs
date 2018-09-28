@@ -150,6 +150,7 @@ namespace FHXTools
                         Stopwatch sw = new Stopwatch();
                         sw.Start();
                         FHXDatabaseBuilder b = new FHXDatabaseBuilder();
+                        b.SetFromFile(@"D:\FHX\BDD Instrum.csv");
                         b.BuildModules(modules, saveFileDialog.FileName);
                         sw.Stop();
                         MessageBox.Show(string.Format("{0} modules exportés en {1}ms ({2}ms/module)", modules.Count, sw.ElapsedMilliseconds, sw.ElapsedMilliseconds / modules.Count));

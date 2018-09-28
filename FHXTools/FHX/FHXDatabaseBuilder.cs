@@ -74,6 +74,35 @@ namespace FHXTools.FHX
             this.Conditions = Conditions;
         }
 
+        public void SetFromFile(string file)
+        {
+            this.Columns.Clear();
+            this.Conditions.Clear();
+
+            string[] lines = File.ReadAllLines(file);
+
+            int l = 2;
+            foreach(string line in lines)
+            {
+                string[] values = line.Split(';');
+                this.Columns.Add(new KeyValuePair<string, int>(values[0], l));
+
+                Func<FHXObject, FHXParameter> Condition = new Func<FHXObject, FHXParameter>((FHXObject o) =>
+                {
+                    FHXParameter p = null;
+                    for (int i = 1; i < values.Length; i++)
+                    {
+                        p = o.GetSingleParameterFromPath(values[i]);
+                        if (p != null) return p;
+                    }
+                    return p;
+                });
+
+                this.Conditions.Add(new KeyValuePair<string, Func<FHXObject, FHXParameter>>(values[0], Condition));
+                l++;
+            }
+        }
+
         private static List<KeyValuePair<string, int>> DefaultColumns()
         {
             List<KeyValuePair<string, int>> Columns = new List<KeyValuePair<string, int>>();
