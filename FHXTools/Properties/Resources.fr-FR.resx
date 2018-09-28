@@ -120,6 +120,9 @@
   <data name="Comparison" xml:space="preserve">
     <value>Comparaison</value>
   </data>
+  <data name="CreateDatabase" xml:space="preserve">
+    <value>Créer BDD Instrument</value>
+  </data>
   <data name="ErrorLoading" xml:space="preserve">
     <value>Une erreur est surevenue durant l'ouverture des fichiers.</value>
   </data>

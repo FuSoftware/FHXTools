@@ -214,6 +214,19 @@ namespace FHXTools.FHX
             return current; // Returns the last child from the search
         }
 
+        public FHXParameter GetSingleParameterFromPath(string filter)
+        {
+            var p = this.GetAllParameters();
+            if(p.Any(i => i.Path.Contains(filter)))
+            {
+                return p.Single(i => i.Path.Contains(filter));
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public List<FHXSearchResult> Search(string query)
         {
             List<FHXSearchResult> res = new List<FHXSearchResult>();

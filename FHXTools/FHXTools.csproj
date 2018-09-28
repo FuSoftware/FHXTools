@@ -163,6 +163,7 @@
     </None>
     <Compile Include="FHX\FHXComparator.cs" />
     <Compile Include="FHX\FHXCompareResult.cs" />
+    <Compile Include="FHX\FHXDatabaseBuilder.cs" />
     <Compile Include="FHX\FHXExporter.cs" />
     <Compile Include="FHX\FHXObject.cs" />
     <Compile Include="FHX\FHXParameter.cs" />

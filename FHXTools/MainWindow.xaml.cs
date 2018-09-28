@@ -128,6 +128,36 @@ namespace FHXTools
             }            
         }
 
+        private void CreateModuleDatabase(object sender, RoutedEventArgs e)
+        {
+            List<FHXObject> modules = Root.GetAllChildren().Where(i => i.Type == "MODULE").ToList();
+            //13ms / module
+
+            string sMessageBoxText = string.Format("Créer la BDD Instrum ? (Prendra environ {0} secondes)", modules.Count * 13 / 1000);
+            string sCaption = "Export";
+            MessageBoxButton btnMessageBox = MessageBoxButton.YesNoCancel;
+            MessageBoxImage icnMessageBox = MessageBoxImage.Warning;
+
+            MessageBoxResult rsltMessageBox = MessageBox.Show(sMessageBoxText, sCaption, btnMessageBox, icnMessageBox);
+
+            switch (rsltMessageBox)
+            {
+                case MessageBoxResult.Yes:
+                    SaveFileDialog saveFileDialog = new SaveFileDialog();
+                    saveFileDialog.Filter = "Excel file (*.xlsx)|*.xlsx";
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        Stopwatch sw = new Stopwatch();
+                        sw.Start();
+                        FHXDatabaseBuilder b = new FHXDatabaseBuilder();
+                        b.BuildModules(modules, saveFileDialog.FileName);
+                        sw.Stop();
+                        MessageBox.Show(string.Format("{0} modules exportés en {1}ms ({2}ms/module)", modules.Count, sw.ElapsedMilliseconds, sw.ElapsedMilliseconds / modules.Count));
+                    }   
+                    break;
+            }
+        }
+
         private void ExportWord(object sender, RoutedEventArgs e)
         {
             if (Selected == null) return;

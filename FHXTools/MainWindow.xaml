@@ -30,6 +30,7 @@
                 </MenuItem>
 
                 <MenuItem Header="{x:Static p:Resources.Tools}">
+                    <MenuItem Header="{x:Static p:Resources.CreateDatabase}" Click="CreateModuleDatabase" />
                     <MenuItem Header="{x:Static p:Resources.References}" Click="OpenReferences" />
                     <MenuItem Header="{x:Static p:Resources.Extract}" Click="OpenExtractor" />
                     <MenuItem Header="{x:Static p:Resources.Comparison}" Click="OpenComparison" />

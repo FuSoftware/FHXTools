@@ -70,6 +70,15 @@ namespace FHXTools.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Create Database.
+        /// </summary>
+        public static string CreateDatabase {
+            get {
+                return ResourceManager.GetString("CreateDatabase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Error while loading one of the objects.
         /// </summary>
         public static string ErrorLoading {
