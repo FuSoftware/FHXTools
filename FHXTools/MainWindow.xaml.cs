@@ -106,6 +106,27 @@ namespace FHXTools
             w.Show();
         }
 
+        private void Convert(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "XML file (*.xml)|*.xml";
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    var t = new Thread(() =>
+                    {
+                        FHXObject o = FHXParserWrapper.FromFile(openFileDialog.FileName);
+                        FHXParserWrapper.BuildDeltaVHierarchy(o);
+                        FHXConverter.ToXML(o, saveFileDialog.FileName);
+                        MessageBox.Show("Fichier converti");
+                    });
+                    t.Start();
+                }
+            }
+        }
+
         private void ExportExcel(object sender, RoutedEventArgs e)
         {
             if (Selected == null) return;
@@ -131,9 +152,9 @@ namespace FHXTools
         private void CreateModuleDatabase(object sender, RoutedEventArgs e)
         {
             List<FHXObject> modules = Root.GetAllChildren().Where(i => i.Type == "MODULE").ToList();
-            //13ms / module
+            //100ms / module
 
-            string sMessageBoxText = string.Format("Créer la BDD Instrum ? (Prendra environ {0} secondes)", modules.Count * 13 / 1000);
+            string sMessageBoxText = string.Format("Créer la BDD Instrum ? (Prendra environ {0} secondes)", modules.Count * 100 / 1000);
             string sCaption = "Export";
             MessageBoxButton btnMessageBox = MessageBoxButton.YesNoCancel;
             MessageBoxImage icnMessageBox = MessageBoxImage.Warning;
@@ -147,13 +168,18 @@ namespace FHXTools
                     saveFileDialog.Filter = "Excel file (*.xlsx)|*.xlsx";
                     if (saveFileDialog.ShowDialog() == true)
                     {
-                        Stopwatch sw = new Stopwatch();
-                        sw.Start();
-                        FHXDatabaseBuilder b = new FHXDatabaseBuilder();
-                        b.SetFromFile(@"D:\FHX\BDD Instrum.csv");
-                        b.BuildModules(modules, saveFileDialog.FileName);
-                        sw.Stop();
-                        MessageBox.Show(string.Format("{0} modules exportés en {1}ms ({2}ms/module)", modules.Count, sw.ElapsedMilliseconds, sw.ElapsedMilliseconds / modules.Count));
+                        OpenFileDialog openFileDialog = new OpenFileDialog();
+                        openFileDialog.Filter = "CSV file (*.csv)|*.csv";
+                        if (openFileDialog.ShowDialog() == true)
+                        {
+                            Stopwatch sw = new Stopwatch();
+                            sw.Start();
+                            FHXDatabaseBuilder b = new FHXDatabaseBuilder();
+                            b.SetFromFile(openFileDialog.FileName);
+                            b.BuildModules(modules, saveFileDialog.FileName);
+                            sw.Stop();
+                            MessageBox.Show(string.Format("{0} modules exportés en {1}ms ({2}ms/module)", modules.Count, sw.ElapsedMilliseconds, sw.ElapsedMilliseconds / modules.Count));
+                        }
                     }   
                     break;
             }

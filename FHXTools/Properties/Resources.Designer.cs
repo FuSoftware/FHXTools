@@ -70,6 +70,15 @@ namespace FHXTools.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Convert.
+        /// </summary>
+        public static string Convert {
+            get {
+                return ResourceManager.GetString("Convert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Create Database.
         /// </summary>
         public static string CreateDatabase {

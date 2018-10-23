@@ -120,6 +120,9 @@
   <data name="Comparison" xml:space="preserve">
     <value>Comparaison</value>
   </data>
+  <data name="Convert" xml:space="preserve">
+    <value>Convertir</value>
+  </data>
   <data name="CreateDatabase" xml:space="preserve">
     <value>Créer BDD Instrument</value>
   </data>
