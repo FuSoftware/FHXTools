@@ -16,19 +16,48 @@ namespace FHXTools.FHX
 
             XmlNode root = xmlDoc.FirstChild;
 
-            return FromXMLObject(root.FirstChild, xmlDoc);
-
-            
+            return FromXMLObject(root.FirstChild);
         }
 
-        public static FHXObject FromXMLObject(XmlNode node, XmlDocument doc)
+        public static FHXObject FromXMLObject(XmlNode node)
         {
+            FHXObject o = new FHXObject();
 
-        }
+            foreach(XmlAttribute a in node.Attributes)
+            {
+                if(a.Name == "TYPE")
+                {
+                    o.Type = a.Value;
+                }
+                else
+                {
+                    o.AddParameter(new FHXParameter(a.Name, a.Value, true));
+                }
+            }
 
-        public static FHXParameter FromXMLParameter(XmlNode node, XmlDocument doc)
-        {
+            foreach(XmlNode c in node.ChildNodes)
+            {
+                if(c.Name == "parameters")
+                {
+                    foreach (XmlAttribute a in c.Attributes)
+                    {
+                        o.AddParameter(new FHXParameter(a.Name, a.Value, false));
+                    }
+                }
+                else if(c.Name == "children")
+                {
+                    foreach(XmlNode cc in c.ChildNodes)
+                    {
+                        o.AddChild(FromXMLObject(cc));
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Unknown tag : {0}", c.Name);
+                }
+            }
 
+            return o;
         }
 
         public static void ToXML(FHXObject root, string file)
@@ -42,20 +71,6 @@ namespace FHXTools.FHX
             xmlDoc.Save(file);
         }
 
-        public static void ToXML(FHXParameter p, XmlNode parentNode, XmlDocument doc)
-        {
-            XmlNode oNode = doc.CreateElement("parameter");
-            parentNode.AppendChild(oNode);
-
-            XmlAttribute a = doc.CreateAttribute("name");
-            a.Value = p.Name;
-            XmlAttribute b = doc.CreateAttribute("value");
-            b.Value = p.Value;
-
-            oNode.Attributes.Append(a);
-            oNode.Attributes.Append(b);
-        }
-
         public static void ToXML(FHXObject o, XmlNode parentNode, XmlDocument doc)
         {
             XmlNode oNode = doc.CreateElement("object");
@@ -64,7 +79,6 @@ namespace FHXTools.FHX
             XmlAttribute attr = doc.CreateAttribute("TYPE");
             attr.Value = o.Type;
             oNode.Attributes.Append(attr);
-
 
             if (o.Parameters.Count > 0)
             {
@@ -75,12 +89,17 @@ namespace FHXTools.FHX
                     oNode.Attributes.Append(a);
                 }
 
-                XmlNode cNode = doc.CreateElement("parameters");
-                oNode.AppendChild(cNode);
-
-                foreach (FHXParameter p in o.Parameters.Where((i)=>i.Mandatory == false))
+                if(o.Parameters.Where((i) => i.Mandatory == false).ToList().Count > 0)
                 {
-                    ToXML(p, cNode, doc);
+                    XmlNode cNode = doc.CreateElement("parameters");
+                    oNode.AppendChild(cNode);
+
+                    foreach (FHXParameter p in o.Parameters.Where((i) => i.Mandatory == false))
+                    {
+                        XmlAttribute a = doc.CreateAttribute(p.Name);
+                        a.Value = p.Value;
+                        cNode.Attributes.Append(a);
+                    }
                 }
             }
 

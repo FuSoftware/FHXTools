@@ -147,11 +147,17 @@
   <data name="Open" xml:space="preserve">
     <value>Ouvrir</value>
   </data>
+  <data name="OpenFHX" xml:space="preserve">
+    <value>Ouvrir FHX</value>
+  </data>
   <data name="OpenFirstFile" xml:space="preserve">
     <value>Selectionner le premier fichier</value>
   </data>
   <data name="OpenSecondFile" xml:space="preserve">
     <value>Selectionner le second fichier</value>
+  </data>
+  <data name="OpenXML" xml:space="preserve">
+    <value>Ouvrir XML</value>
   </data>
   <data name="ParsingAttributes" xml:space="preserve">
     <value>Chargement des attributs</value>

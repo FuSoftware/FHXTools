@@ -160,6 +160,15 @@ namespace FHXTools.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Open FHX.
+        /// </summary>
+        public static string OpenFHX {
+            get {
+                return ResourceManager.GetString("OpenFHX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Open the first file.
         /// </summary>
         public static string OpenFirstFile {
@@ -174,6 +183,15 @@ namespace FHXTools.Properties {
         public static string OpenSecondFile {
             get {
                 return ResourceManager.GetString("OpenSecondFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Open XML.
+        /// </summary>
+        public static string OpenXML {
+            get {
+                return ResourceManager.GetString("OpenXML", resourceCulture);
             }
         }
         

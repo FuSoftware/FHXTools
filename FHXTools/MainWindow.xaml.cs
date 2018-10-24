@@ -41,6 +41,13 @@ namespace FHXTools
                 ChargerFichier((openFileDialog.FileName));
         }
 
+        private void OpenXML(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+                ChargerFichierXML((openFileDialog.FileName));
+        }
+
         private void ChargerFichier(string file)
         {
             var t = new Thread(() => 
@@ -48,6 +55,17 @@ namespace FHXTools
                 this.Root = FHXParserWrapper.FromFile(file);
                 FHXParserWrapper.BuildDeltaVHierarchy(this.Root);
 				this.tvMain.Dispatcher.BeginInvoke(new Action(delegate { this.tvMain.Items.Add(this.Root.ToTreeViewItem(true, false)); })); 
+            });
+            t.Start();
+        }
+
+        private void ChargerFichierXML(string file)
+        {
+            var t = new Thread(() =>
+            {
+                this.Root = FHXConverter.FromXML(file);
+                //FHXParserWrapper.BuildDeltaVHierarchy(this.Root);
+                this.tvMain.Dispatcher.BeginInvoke(new Action(delegate { this.tvMain.Items.Add(this.Root.ToTreeViewItem(true, false)); }));
             });
             t.Start();
         }
