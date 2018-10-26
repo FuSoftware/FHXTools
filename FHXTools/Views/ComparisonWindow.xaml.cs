@@ -1,4 +1,7 @@
-﻿using FHXTools.FHX;
+﻿using DiffPlex;
+using DiffPlex.DiffBuilder;
+using DiffPlex.DiffBuilder.Model;
+using FHXTools.FHX;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -126,8 +129,69 @@ namespace FHXTools.Views
             // execute some code
             DataGridRow r = (DataGridRow)sender;
             dynamic i = r.Item;
-            List<FHXCompareResult> rs = i.Value;
-            this.gridResultsValue.ItemsSource = rs;
+            FHXCompareResult rs = i.Value;
+
+            var diffBuilder = new SideBySideDiffBuilder(new Differ());
+
+            if(rs.NewValue == null)
+            {
+                this.tbOld.Document.Blocks.Clear();
+                this.tbNew.Document.Blocks.Clear();
+                
+                var p = new Paragraph();
+                var tr = new TextRange(p.ContentStart, p.ContentEnd);
+                tr.Text = rs.OldValue;
+
+                this.tbOld.Document.Blocks.Add(p);
+            }
+            else
+            {
+                var diff = diffBuilder.BuildDiffModel(rs.OldValue, rs.NewValue);
+
+                RichTextBox[] tb = new RichTextBox[2] { this.tbOld, this.tbNew };
+                List<DiffPiece>[] t = new List<DiffPiece>[2] { diff.OldText.Lines, diff.NewText.Lines };
+
+                for (int j = 0; j < 2; j++)
+                {
+                    tb[j].Document.Blocks.Clear();
+                    foreach (DiffPiece line in t[j])
+                    {
+                        var p = new Paragraph();
+                        p.Margin = new Thickness(0);
+                        TextRange tr;
+                        tr = new TextRange(p.ContentStart, p.ContentEnd);
+                        switch (line.Type)
+                        {
+                            case ChangeType.Inserted:
+                                tr.Text = line.Text;
+                                tr.ApplyPropertyValue(TextElement.BackgroundProperty, Brushes.LightGreen);
+                                break;
+                            case ChangeType.Deleted:
+                                tr.Text = line.Text;
+                                tr.ApplyPropertyValue(TextElement.BackgroundProperty, Brushes.LightPink);
+                                break;
+                            case ChangeType.Modified:
+                                tr.Text = line.Text;
+                                tr.ApplyPropertyValue(TextElement.BackgroundProperty, Brushes.Goldenrod);
+                                break;
+                            case ChangeType.Imaginary:
+                                tr.Text = "            ";
+                                tr.ApplyPropertyValue(TextElement.BackgroundProperty, Brushes.Gray);
+                                break;
+                            case ChangeType.Unchanged:
+                                tr.Text = line.Text;
+                                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Black);
+                                break;
+                            default:
+                                tr.Text = line.Text;
+                                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+                                break;
+                        }
+                        tb[j].Document.Blocks.Add(p);
+                    }
+                }
+            }
+            
         }
     }
 }

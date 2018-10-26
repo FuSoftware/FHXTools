@@ -8,7 +8,7 @@ namespace FHXTools.FHX
 {
     public class FHXCompareResultList
     {
-        Dictionary<string, List<FHXCompareResult>> _results = new Dictionary<string, List<FHXCompareResult>>();
+        Dictionary<string, FHXCompareResult> _results = new Dictionary<string, FHXCompareResult>();
 
         public FHXCompareResultList()
         {
@@ -20,13 +20,15 @@ namespace FHXTools.FHX
             string rpath = param.RelativePath(parent);
             if (!_results.Keys.Contains(rpath))
             {
-                _results.Add(rpath, new List<FHXCompareResult>());
+                _results.Add(rpath, new FHXCompareResult(parent, type, param.Value));
             }
-
-            _results[rpath].Add(new FHXCompareResult(parent, type, param.Value));
+            else
+            {
+                _results[rpath].NewValue = param.Value;
+            }
         }
 
-        public Dictionary<string, List<FHXCompareResult>> Results
+        public Dictionary<string, FHXCompareResult> Results
         {
             get
             {
@@ -46,7 +48,8 @@ namespace FHXTools.FHX
     public class FHXCompareResult
     {
         FHXCompareType _type;
-        public string Value { get; set; }
+        public string NewValue { get; set; }
+        public string OldValue { get; set; }
         public FHXObject Parent { get; set; }
         public string Type
         {
@@ -58,7 +61,7 @@ namespace FHXTools.FHX
 
         public FHXCompareResult(FHXObject parent, FHXCompareType type, string value = "")
         {
-            this.Value = value;
+            this.OldValue = value;
             this.Parent = parent;
             this._type = type;
         }
