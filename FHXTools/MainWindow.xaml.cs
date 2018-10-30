@@ -18,6 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using FHXTools.FHX.Conversion;
 
 namespace FHXTools
 {
@@ -34,18 +35,25 @@ namespace FHXTools
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void OpenFhx(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
                 ChargerFichier((openFileDialog.FileName));
         }
 
-        private void OpenXML(object sender, RoutedEventArgs e)
+        private void OpenXml(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
                 ChargerFichierXML((openFileDialog.FileName));
+        }
+
+        private void OpenJson(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+                ChargerFichierJson((openFileDialog.FileName));
         }
 
         private void ChargerFichier(string file)
@@ -63,7 +71,18 @@ namespace FHXTools
         {
             var t = new Thread(() =>
             {
-                this.Root = FHXConverter.FromXML(file);
+                this.Root = FHXXMLConverter.FromXML(file);
+                //FHXParserWrapper.BuildDeltaVHierarchy(this.Root);
+                this.tvMain.Dispatcher.BeginInvoke(new Action(delegate { this.tvMain.Items.Add(this.Root.ToTreeViewItem(true, false)); }));
+            });
+            t.Start();
+        }
+
+        private void ChargerFichierJson(string file)
+        {
+            var t = new Thread(() =>
+            {
+                this.Root = FHXJsonConverter.FromJson(file);
                 //FHXParserWrapper.BuildDeltaVHierarchy(this.Root);
                 this.tvMain.Dispatcher.BeginInvoke(new Action(delegate { this.tvMain.Items.Add(this.Root.ToTreeViewItem(true, false)); }));
             });
@@ -124,9 +143,10 @@ namespace FHXTools
             w.Show();
         }
 
-        private void Convert(object sender, RoutedEventArgs e)
+        private void ConvertXml(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "FHX file (*.fhx)|*.fhx";
             if (openFileDialog.ShowDialog() == true)
             {
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
@@ -137,7 +157,29 @@ namespace FHXTools
                     {
                         FHXObject o = FHXParserWrapper.FromFile(openFileDialog.FileName);
                         FHXParserWrapper.BuildDeltaVHierarchy(o);
-                        FHXConverter.ToXML(o, saveFileDialog.FileName);
+                        FHXXMLConverter.ToXML(o, saveFileDialog.FileName);
+                        MessageBox.Show("Fichier converti");
+                    });
+                    t.Start();
+                }
+            }
+        }
+
+        private void ConvertJson(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "FHX file (*.fhx)|*.fhx";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "JSON file (*.json)|*.json";
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    var t = new Thread(() =>
+                    {
+                        FHXObject o = FHXParserWrapper.FromFile(openFileDialog.FileName);
+                        FHXParserWrapper.BuildDeltaVHierarchy(o);
+                        FHXJsonConverter.ToJson(o, saveFileDialog.FileName);
                         MessageBox.Show("Fichier converti");
                     });
                     t.Start();

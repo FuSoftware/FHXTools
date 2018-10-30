@@ -1,22 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace FHXTools.FHX
+namespace FHXTools.FHX.Conversion
 {
-    class FHXConverter
+    class FHXXMLConverter
     {
         public static FHXObject FromXML(string file)
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.Load(file);
-
             XmlNode root = xmlDoc.FirstChild;
+            FHXObject o = FromXMLObject(root.FirstChild);
 
-            return FromXMLObject(root.FirstChild);
+            sw.Stop();
+            Console.WriteLine("Loaded {0} in {1}ms", file, sw.ElapsedMilliseconds);
+
+            return o;
         }
 
         public static FHXObject FromXMLObject(XmlNode node)

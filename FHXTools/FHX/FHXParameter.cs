@@ -82,7 +82,7 @@ namespace FHXTools.FHX
         {
             get
             {
-                return HasModule ? this.GetParentFromType("MODULE") : new FHXObject("", "");
+                return HasModule ? this.GetParentFromType("MODULE") : null;
             } 
         }
 

@@ -13,8 +13,8 @@ namespace FHXTools.FHX
 {
     public class FHXObject
     {
-        public List<FHXObject> Children = new List<FHXObject>();
-        public List<FHXParameter> Parameters = new List<FHXParameter>();
+        public List<FHXObject> Children { get; set; }
+        public List<FHXParameter> Parameters { get; set; }
 
         public FHXObject Parent { get; set; }
 
@@ -63,12 +63,16 @@ namespace FHXTools.FHX
         public FHXObject()
         {
             this.mName = "";
+            this.Parameters = new List<FHXParameter>();
+            this.Children = new List<FHXObject>();
         }
 
         public FHXObject(string type, string name = "")
         {
             this.mName = name;
             this.Type = type;
+            this.Parameters = new List<FHXParameter>();
+            this.Children = new List<FHXObject>();
         }
 
         public override string ToString()

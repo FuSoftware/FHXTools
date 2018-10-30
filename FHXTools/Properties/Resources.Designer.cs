@@ -151,6 +151,15 @@ namespace FHXTools.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à JSON.
+        /// </summary>
+        public static string JSON {
+            get {
+                return ResourceManager.GetString("JSON", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Open.
         /// </summary>
         public static string Open {
@@ -336,6 +345,15 @@ namespace FHXTools.Properties {
         public static string Word {
             get {
                 return ResourceManager.GetString("Word", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à XML.
+        /// </summary>
+        public static string XML {
+            get {
+                return ResourceManager.GetString("XML", resourceCulture);
             }
         }
     }

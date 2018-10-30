@@ -19,9 +19,15 @@
         <DockPanel Grid.Row="0">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="{x:Static p:Resources.File}">
-                    <MenuItem Header="{x:Static p:Resources.OpenFHX}" Click="Button_Click" />
-                    <MenuItem Header="{x:Static p:Resources.OpenXML}" Click="OpenXML" />
-                    <MenuItem Header="{x:Static p:Resources.Convert}" Click="Convert" />
+                    <MenuItem Header="{x:Static p:Resources.Open}">
+                        <MenuItem Header="{x:Static p:Resources.FHX}" Click="OpenFhx" />
+                        <MenuItem Header="{x:Static p:Resources.XML}" Click="OpenXml" />
+                        <!--<MenuItem Header="{x:Static p:Resources.JSON}" Click="OpenJson" />-->
+                    </MenuItem>
+                    <MenuItem Header="{x:Static p:Resources.Convert}">
+                        <MenuItem Header="{x:Static p:Resources.XML}" Click="ConvertXml" />
+                        <!--<MenuItem Header="{x:Static p:Resources.JSON}" Click="ConvertJson" />-->
+                    </MenuItem>
                     <MenuItem Header="{x:Static p:Resources.Export}">
                         <MenuItem Header="{x:Static p:Resources.Excel}" Click="ExportExcel" />
                         <MenuItem Header="{x:Static p:Resources.Word}" Click="ExportWord" />

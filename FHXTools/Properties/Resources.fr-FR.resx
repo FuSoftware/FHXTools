@@ -144,6 +144,9 @@
   <data name="File" xml:space="preserve">
     <value>Fichier</value>
   </data>
+  <data name="JSON" xml:space="preserve">
+    <value>JSON</value>
+  </data>
   <data name="Open" xml:space="preserve">
     <value>Ouvrir</value>
   </data>
@@ -200,5 +203,8 @@
   </data>
   <data name="Tools" xml:space="preserve">
     <value>Outils</value>
+  </data>
+  <data name="XML" xml:space="preserve">
+    <value>XML</value>
   </data>
 </root>
