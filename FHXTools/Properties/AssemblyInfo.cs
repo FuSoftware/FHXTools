@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("FHXTools")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("VINCI Energies")]
+[assembly: AssemblyCompany("Actemium Tavaux")]
 [assembly: AssemblyProduct("FHXTools")]
-[assembly: AssemblyCopyright("Copyright © VINCI Energies 2018")]
+[assembly: AssemblyCopyright("Copyright © Actemium Tavaux 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
