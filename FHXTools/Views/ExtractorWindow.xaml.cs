@@ -53,18 +53,26 @@ namespace FHXTools.Views
             string sMessageBoxText = string.Format("Exporter la comparaison ?");
             string sCaption = Properties.Resources.Export;
 
-            MessageBoxButton btnMessageBox = MessageBoxButton.YesNoCancel;
-            MessageBoxImage icnMessageBox = MessageBoxImage.Warning;
-
-            MessageBoxResult rsltMessageBox = MessageBox.Show(sMessageBoxText, sCaption, btnMessageBox, icnMessageBox);
+            MessageBoxResult rsltMessageBox = MessageBox.Show("Exporter sous format BulkEdit ?", Properties.Resources.Export, MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Excel file (*.xlsx)|*.xlsx";
 
             switch (rsltMessageBox)
             {
                 case MessageBoxResult.Yes:
-                    SaveFileDialog saveFileDialog = new SaveFileDialog();
-                    saveFileDialog.Filter = "Excel file (*.xlsx)|*.xlsx";
                     if (saveFileDialog.ShowDialog() == true)
-                        FHXExporter.ExportParameterList(results, saveFileDialog.FileName);
+                        FHXExporter.ExportBulkEdit(results, saveFileDialog.FileName);
+                    break;
+
+                case MessageBoxResult.No:
+                    MessageBoxResult rMessageBox = MessageBox.Show("Exporter sous format Ligne ?", Properties.Resources.Export, MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+                    switch (rsltMessageBox)
+                    {
+                        case MessageBoxResult.Yes:
+                            if (saveFileDialog.ShowDialog() == true)
+                                FHXExporter.ExportParameterList(results, saveFileDialog.FileName);
+                            break;
+                    }
                     break;
             }
         }

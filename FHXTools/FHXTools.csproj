@@ -205,6 +205,7 @@
     <Compile Include="FHX\FHXParserWrapper.cs" />
     <Compile Include="FHX\FHXReferenceSearch.cs" />
     <Compile Include="FHX\FHXSearchResult.cs" />
+    <Compile Include="FHX\FHXStructureHandler.cs" />
     <Compile Include="Parsing\Parser.cs" />
     <Compile Include="Parsing\TokenListParser.cs" />
     <Compile Include="Parsing\TokenStreamParser.cs" />

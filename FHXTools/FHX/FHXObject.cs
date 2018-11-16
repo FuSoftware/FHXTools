@@ -112,6 +112,12 @@ namespace FHXTools.FHX
             return has ? this.Parameters.Single(s => s.Name == name) : null;
         }
 
+        public string GetParameterValue(string name)
+        {
+            FHXParameter p = GetParameter(name);
+            return p == null ? "" : p.Value;
+        }
+
         public string Path
         {
             get

@@ -9,6 +9,8 @@ using FHXTools.FHX;
 using Xceed.Words.NET;
 using System.Net;
 using FHXTools.Parsing;
+using Microsoft.Win32;
+using static FHXTools.FHX.FHXStructureHandler;
 
 namespace FHXTools
 {
@@ -16,10 +18,7 @@ namespace FHXTools
     {
         public static void Main()
         {
-            //TestTokens("{VALUE=\"testing\"}");
-            //TestTokens("{VALUE=\"formula=\"\"I am a test\"\"!\"}");
-            //TestTokensFile(@"S:\AFFAIRE\X_1111111_1_11 MASSOTTE\A2I\P_0107045_1_10 SLV Ixan\_27 - RS Dispersant R022\02 - Préalables - données d'entrées\Plans SLV\Export avant modification\PI-R602A.fhx");
-            //TestTokensFile(@"S:\AFFAIRE\X_1111111_1_11 MASSOTTE\A2I\P_0107045_1_10 SLV Ixan\_27 - RS Dispersant R022\02 - Préalables - données d'entrées\Plans SLV\Export avant modification\SUS-INT-DISP.fhx");
+            TestNodes();
             Console.ReadLine();
         }
 
@@ -95,6 +94,28 @@ namespace FHXTools
             }
 
             return tokens;
+        }
+
+        public static void TestNodes()
+        {
+            //Load File
+            string file = @"D:\FHX\SITE_COMMUNS.fhx";
+            FHXObject Root = FHXParserWrapper.FromFile(file);
+            FHXParserWrapper.BuildDeltaVHierarchy(Root);
+
+            //Test Areas
+            FHXStructureHandler h = new FHXStructureHandler(Root);
+            FHXNode r = new FHXNode("Root");
+            foreach (FHXNode n in h.Areas)
+            {
+                r.Children.Add(n);
+                foreach (FHXNode m in h.ModulesArea(n.Label))
+                {
+                    n.Children.Add(m);
+                }
+            }
+
+            Console.WriteLine(r.Label);
         }
 
     }

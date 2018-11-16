@@ -91,6 +91,61 @@ namespace FHXTools.FHX
             }
         }
 
+        public static void ExportBulkEdit(List<FHXParameter> data, string file)
+        {
+            using (var pkg = new ExcelPackage())
+            {
+                var wbk = pkg.Workbook;
+                var sht = wbk.Worksheets.Add("Parameters");
+                
+                List<string> headers = new List<string>();
+                Dictionary<string, Dictionary<string, string>> table = new Dictionary<string, Dictionary<string, string>>();
+
+                int i = 2;
+
+                foreach (var param in data)
+                {
+                    string area = "";
+                    string tag = "";
+                    FHXObject module = param.Module;
+                    if (module != null)
+                    {
+                        area = module.GetParameter("PLANT_AREA").Value;
+                        tag = module.GetParameter("TAG").Value;
+                        string id = module == null ? param.Parent.Name + "." + param.Name : param.RelativePath(module);
+
+                        if (!headers.Contains(id)) headers.Add(id);
+                        if (!table.ContainsKey(tag)) table.Add(tag, new Dictionary<string, string>());
+
+                        if (!table[tag].ContainsKey(id)) table[tag].Add(id, param.Value);
+                        else table[tag][id] = param.Value;
+                    }
+                }
+
+                sht.Cells[1, 1].Value = "Module";
+
+                for (int j = 2; j < headers.Count; j++)
+                {
+                    sht.Cells[1, j].Value = headers[j];
+                }
+
+                foreach (string k in table.Keys) //For each modules
+                {
+                    sht.Cells[i, 1].Value = k;
+
+                    for (int j=2;j<headers.Count;j++)
+                    {
+                        if (table[k].ContainsKey(headers[j]))
+                        {
+                            sht.Cells[i, j].Value = table[k][headers[j]];
+                        }
+                    }
+                    i++;
+                }
+                pkg.SaveAs(new FileInfo(file));
+            }
+        }
+
         public static void ExportParameterList(List<FHXParameter> data, string file)
         {
             using (var pkg = new ExcelPackage())
