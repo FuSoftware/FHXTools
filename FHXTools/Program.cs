@@ -11,6 +11,8 @@ using System.Net;
 using FHXTools.Parsing;
 using Microsoft.Win32;
 using static FHXTools.FHX.FHXStructureHandler;
+using FHXTools.FHX;
+using FHXTools.FHX.Conversion;
 
 namespace FHXTools
 {
@@ -18,8 +20,35 @@ namespace FHXTools
     {
         public static void Main()
         {
-            TestNodes();
+            SearchAffectations();
             Console.ReadLine();
+        }
+
+        public static void SearchAffectations()
+        {
+            string[] affectations = File.ReadAllLines(@"D:\FHX\Affectations.txt");
+            FHXObject Root = FHXXMLConverter.FromXML(@"D:\FHX\Base LLIC3 19-08-14.xml");
+            var res = FHXAffectationChecker.CheckAffectations(affectations, Root);
+
+            Console.WriteLine("{0} / {1}", affectations.Length, res.Keys.Count);
+
+            foreach(var r in res.Keys)
+            {
+                if (res.Keys.Contains(r))
+                {
+                    if (res[r].Count == 0)
+                    {
+                        Console.WriteLine(r);
+                    }
+                }
+                
+            }
+        }
+
+        public static void ExtractModules(string file)
+        {
+            var Areas = FHXBulkEditSimulation.AreasModules(File.ReadAllText(file));
+            FHXBulkEditSimulation.GenerateFiles(Areas, @"D:\FHX\Simul");
         }
 
         public static void TestWord(string file)
@@ -29,6 +58,11 @@ namespace FHXTools
                 
                 //doc.Save();
             }
+        }
+
+        public static void UpdateTimestamps(string file)
+        {
+            FHXTimestampUpdater.UpdateFile(file);
         }
 
         public static void TestTokensFile(string input)

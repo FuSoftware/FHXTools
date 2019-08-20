@@ -66,7 +66,7 @@ namespace FHXTools.Views
 
                 case MessageBoxResult.No:
                     MessageBoxResult rMessageBox = MessageBox.Show("Exporter sous format Ligne ?", Properties.Resources.Export, MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
-                    switch (rsltMessageBox)
+                    switch (rMessageBox)
                     {
                         case MessageBoxResult.Yes:
                             if (saveFileDialog.ShowDialog() == true)

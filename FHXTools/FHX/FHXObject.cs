@@ -237,29 +237,64 @@ namespace FHXTools.FHX
             }
         }
 
+        public Dictionary<string, List<FHXSearchResult>> SearchMultiple(string[] query)
+        {
+            List<FHXObject> os = GetAllChildren();
+            List<FHXParameter> ps = GetAllParameters();
+
+            Dictionary<string, List<FHXSearchResult>> results = new Dictionary<string, List<FHXSearchResult>>();
+            foreach (var s in query)
+            {
+                results[s] = SearchSimple(s, os, ps);
+            }
+            return results;
+        }
+
+        public Dictionary<string, List<FHXSearchResult>> SearchMultipleParallel(string[] query)
+        {
+            List<FHXObject> os = GetAllChildren();
+            List<FHXParameter> ps = GetAllParameters();
+
+            Dictionary<string, List<FHXSearchResult>> results = new Dictionary<string, List<FHXSearchResult>>();
+            Parallel.For(0, query.Length, (i) =>
+            {
+                results[query[i]] = SearchSimple(query[i], os, ps);
+            });
+            return results;
+        }
+
         public List<FHXSearchResult> Search(string query)
+        {
+            return SearchSimple(query, GetAllChildren(), GetAllParameters());
+        }
+
+        public List<FHXSearchResult> SearchSimple(string query, List<FHXObject> os, List<FHXParameter> ps)
         {
             List<FHXSearchResult> res = new List<FHXSearchResult>();
 
-            //Search Objects
-            List<FHXObject> os = GetAllChildren();
-            os = os.Where(i => i.mName.Contains(query) || i.Path.Contains(query)).ToList();
-
-            foreach (var o in os)
+            if(os != null)
             {
-                res.Add(new FHXSearchResult(o));
+                os = os.Where(i => i.mName.Contains(query) || i.Path.Contains(query)).ToList();
+
+                foreach (var o in os)
+                {
+                    res.Add(new FHXSearchResult(o));
+                }
             }
-
-            //Search Parameters
-            List<FHXParameter> ps = GetAllParameters();
-            ps = ps.Where(i => i.Name.Contains(query) || i.Path.Contains(query) || i.Value.Contains(query)).ToList();
-
-            foreach (var p in ps)
+            
+            if(ps != null)
             {
-                res.Add(new FHXSearchResult(p));
+                ps = ps.Where(i => i.Name.Contains(query) || i.Path.Contains(query) || i.Value.Contains(query)).ToList();
+
+                foreach (var p in ps)
+                {
+                    res.Add(new FHXSearchResult(p));
+                }
             }
+            
 
             return res;
+
         }
     }
 }

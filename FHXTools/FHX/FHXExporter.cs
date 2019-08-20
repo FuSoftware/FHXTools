@@ -124,20 +124,25 @@ namespace FHXTools.FHX
 
                 sht.Cells[1, 1].Value = "Module";
 
-                for (int j = 2; j < headers.Count; j++)
+                for (int j = 0; j < headers.Count; j++)
                 {
-                    sht.Cells[1, j].Value = headers[j];
+                    sht.Cells[1, j+2].Value = headers[j];
                 }
 
                 foreach (string k in table.Keys) //For each modules
                 {
                     sht.Cells[i, 1].Value = k;
 
-                    for (int j=2;j<headers.Count;j++)
+                    for (int j=0;j<headers.Count;j++)
                     {
+                        int h = j + 2;
                         if (table[k].ContainsKey(headers[j]))
                         {
-                            sht.Cells[i, j].Value = table[k][headers[j]];
+                            sht.Cells[i, h].Value = table[k][headers[j]];
+                        }
+                        else
+                        {
+                            sht.Cells[i, h].Value = "<NULL>";
                         }
                     }
                     i++;

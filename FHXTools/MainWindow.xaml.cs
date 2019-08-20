@@ -35,6 +35,19 @@ namespace FHXTools
             InitializeComponent();
         }
 
+        private void ModulesSimulation(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                var Areas = FHXBulkEditSimulation.AreasModules(File.ReadAllText(openFileDialog.FileName));
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    FHXBulkEditSimulation.GenerateFiles(Areas, openFileDialog.FileName);
+                }
+            }
+        }
+
         private void OpenFhx(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -117,6 +130,12 @@ namespace FHXTools
                     }
                 }
             }
+        }
+
+        private void OpenAffectationsWindow(object sender, RoutedEventArgs e)
+        {
+            AffectationWindow w = new AffectationWindow(this.Root);
+            w.Show();
         }
 
         private void OpenSearchWindow(object sender, RoutedEventArgs e)

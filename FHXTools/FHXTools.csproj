@@ -194,6 +194,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Compile Include="FHX\Conversion\FHXJsonConverter.cs" />
+    <Compile Include="FHX\FHXAffectationChecker.cs" />
+    <Compile Include="FHX\FHXBulkEditSimulation.cs" />
     <Compile Include="FHX\FHXComparator.cs" />
     <Compile Include="FHX\FHXCompareResult.cs" />
     <Compile Include="FHX\Conversion\FHXXMLConverter.cs" />
@@ -206,6 +208,7 @@
     <Compile Include="FHX\FHXReferenceSearch.cs" />
     <Compile Include="FHX\FHXSearchResult.cs" />
     <Compile Include="FHX\FHXStructureHandler.cs" />
+    <Compile Include="FHX\FHXTimestampUpdater.cs" />
     <Compile Include="Parsing\Parser.cs" />
     <Compile Include="Parsing\TokenListParser.cs" />
     <Compile Include="Parsing\TokenStreamParser.cs" />
@@ -232,6 +235,9 @@
     </Compile>
     <Compile Include="Views\ReferenceWindow.xaml.cs">
       <DependentUpon>ReferenceWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AffectationWindow.xaml.cs">
+      <DependentUpon>AffectationWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SearchWindow.xaml.cs">
       <DependentUpon>SearchWindow.xaml</DependentUpon>
@@ -264,6 +270,10 @@
     <Page Include="Views\ReferenceWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AffectationWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\SearchWindow.xaml">
       <SubType>Designer</SubType>

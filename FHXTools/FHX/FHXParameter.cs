@@ -96,7 +96,11 @@ namespace FHXTools.FHX
 
         public string Path
         {
-            get{ return Parent.Path + "." + this.Name; }
+            get
+            {
+                if (Parent == null) return this.Name;
+                else return Parent.Path + "." + this.Name;
+            }
         }
 
         public string DeltaVPath
